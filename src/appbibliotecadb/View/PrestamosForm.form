@@ -179,12 +179,12 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel51" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblFechaPrestamo" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
+                                  <Component id="lblFechaPrestamo" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel52" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jDchFechaDevolucion" alignment="0" min="-2" pref="220" max="-2" attributes="0"/>
+                                  <Component id="jDchFechaDevolucion" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -209,11 +209,11 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblEstudiante" min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="lblEstudiante" min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="jButton3" min="-2" pref="38" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
@@ -221,22 +221,22 @@
                       <Group type="102" attributes="0">
                           <Component id="jLabel51" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                          <Component id="lblFechaPrestamo" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="lblFechaPrestamo" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Component id="jLabel52" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                          <Component id="jDchFechaDevolucion" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="jDchFechaDevolucion" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="jLabel53" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                  <Component id="txtObservaciones" min="-2" pref="38" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  <Component id="txtObservaciones" min="-2" pref="40" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="jScrollPane19" min="-2" pref="149" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                  <Component id="lblCantidadLibros" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="lblCantidadLibros" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCancelarPrestamo" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
@@ -496,7 +496,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="jLabel50" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="txt_buscarLibroPres" min="-2" pref="38" max="-2" attributes="0"/>
