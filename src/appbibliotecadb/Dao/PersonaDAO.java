@@ -15,7 +15,7 @@ public interface PersonaDAO {
 
     void create(Persona persona);
 
-    List<Persona> readAll();
+    List<Persona> listAllPersonas();
 
     Persona readById(int id);
 

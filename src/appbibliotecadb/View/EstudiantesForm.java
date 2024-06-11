@@ -4,22 +4,13 @@
  */
 package appbibliotecadb.View;
 
-import appbibliotecadb.Controller.CarreraUniController;
 import appbibliotecadb.Controller.TipoDocumentoController;
-import appbibliotecadb.Dao.CarreraUniDAO;
 import appbibliotecadb.Dao.TipoDocumentoDAO;
-import appbibliotecadb.Model.CarreraUni;
 import appbibliotecadb.Model.TipoDocumento;
-import appbibliotecadb.Service.CarreraUniService;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import conection.DatabaseConnection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -41,8 +32,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Permite cerrar solo este formulario sin afectar a otros
         setLocationRelativeTo(null);
 
-       // listarTipoDocumento();
-       // listarCarreraUni();
+        listarTipoDocumento();
     }
 
     /**
@@ -243,13 +233,16 @@ public class EstudiantesForm extends javax.swing.JDialog {
         jLabel3.setText("Ingrese los Datos a Registrar.");
 
         jcbxCiclo.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jcbxCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "INI", "PRI", "SEC" }));
 
         jLabel42.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel42.setText("Grado/Edad");
 
         jcbxCiclo1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jcbxCiclo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "-" }));
 
         jcbxCiclo2.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jcbxCiclo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-", "A", "B", "C", "D", "E", "F", "G" }));
 
         jLabel43.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel43.setText("Seccion");
@@ -258,6 +251,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         jLabel44.setText("Turno");
 
         jcbxCiclo3.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jcbxCiclo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "T", "N" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -344,9 +338,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
                                 .addComponent(txtNombreCompleto1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(20, 20, 20)
                         .addComponent(jLabel36))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel37)))
+                    .addComponent(jLabel37, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -358,19 +350,16 @@ public class EstudiantesForm extends javax.swing.JDialog {
                         .addGap(6, 6, 6)
                         .addComponent(jcbxCiclo3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel42)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel43))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jcbxCiclo2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbxCiclo1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jcbxCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabel42, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel43, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel40))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jcbxCiclo2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jcbxCiclo1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jcbxCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_guardarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -443,37 +432,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         }*/
     }//GEN-LAST:event_JTableCarreraUniMouseClicked
 
-    private void listarCarreraUni() {
-        modelo = new DefaultTableModel();
-        modelo.addColumn("id");
-        modelo.addColumn("Nombre de la Carrera");
-        JTableCarreraUni.setModel(modelo);
-        CarreraUniDAO carreraUniDAO = new CarreraUniController(DatabaseConnection.getConnection());
-        CarreraUniService carreraUniService = new CarreraUniService(carreraUniDAO);
-        List<CarreraUni> carreraUni = carreraUniService.readAll();
-        if (carreraUni.size() > 0) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    for (CarreraUni p : carreraUni) {
-                        Object[] fila = new Object[2];
-                        fila[0] = p.getId(); // Asegurarse de que sea un Integer
-                        fila[1] = p.getNombre();
-                        modelo.addRow(fila);
-
-                    }
-                    // Ocultar la columna ID
-                    JTableCarreraUni.getColumnModel().getColumn(0).setMinWidth(0);
-                    JTableCarreraUni.getColumnModel().getColumn(0).setMaxWidth(0);
-                    JTableCarreraUni.getColumnModel().getColumn(0).setWidth(0);
-                    JTableCarreraUni.getColumnModel().getColumn(0).setPreferredWidth(0);
-                }
-            });
-        } else {
-            System.out.println("La lista de carreras está vacía.");
-        }
-    }
-
-    /**
+      /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {

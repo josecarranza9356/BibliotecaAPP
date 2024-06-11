@@ -134,7 +134,7 @@
                           <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jPanel8" pref="0" max="32767" attributes="0"/>
+                              <Component id="jPanel8" pref="271" max="32767" attributes="0"/>
                               <Component id="jPanel2" alignment="0" pref="271" max="32767" attributes="0"/>
                               <Component id="jPanel1" alignment="0" pref="271" max="32767" attributes="0"/>
                               <Component id="jPanel10" alignment="0" pref="271" max="32767" attributes="0"/>
@@ -1071,7 +1071,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jdataTable_listaLibro">
+                    <Component class="javax.swing.JTable" name="JTable_Libro">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="fd" red="e7" type="rgb"/>
@@ -1144,7 +1144,7 @@
                         <Property name="showVerticalLines" type="boolean" value="false"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jdataTable_listaLibroMouseClicked"/>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="JTable_LibroMouseClicked"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -1452,7 +1452,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jTableEstudiante1">
+                    <Component class="javax.swing.JTable" name="jtableUsuarios">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="fd" red="e7" type="rgb"/>

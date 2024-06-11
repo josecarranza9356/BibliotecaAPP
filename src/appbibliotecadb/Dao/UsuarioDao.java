@@ -4,15 +4,22 @@
  */
 package appbibliotecadb.Dao;
 
-import appbibliotecadb.Model.CarreraUni;
+import appbibliotecadb.Model.Usuario;
 import java.util.List;
 
 /**
  *
- * @author JoseCv14
+ * @author JoseCv1495
  */
-public interface CarreraUniDAO {
-     List<CarreraUni> readAll();
+public interface UsuarioDao {
 
-    CarreraUni readById(int id);
+    void create(Usuario usuario);
+
+    List<Usuario> listAll();
+
+    Usuario readById(int id);
+
+    void update(Usuario usuario);
+
+    void delete(int id);
 }
