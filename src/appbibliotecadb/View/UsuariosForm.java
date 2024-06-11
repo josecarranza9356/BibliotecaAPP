@@ -4,7 +4,15 @@
  */
 package appbibliotecadb.View;
 
+import appbibliotecadb.Controller.PersonaController;
+import appbibliotecadb.Dao.PersonaDAO;
+import appbibliotecadb.Model.Persona;
+import appbibliotecadb.Service.PersonaService;
+import conection.DatabaseConnection;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,11 +23,16 @@ public class UsuariosForm extends javax.swing.JDialog {
     /**
      * Creates new form UsuariosForm
      */
+    private DefaultTableModel modelPersona;
+
     public UsuariosForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Permite cerrar solo este formulario sin afectar a otros
         setLocationRelativeTo(null);
+        modelPersona = new DefaultTableModel();
+        
+        listarPeronas();
     }
 
     /**
@@ -36,7 +49,7 @@ public class UsuariosForm extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jLabel50 = new javax.swing.JLabel();
         jScrollPane20 = new javax.swing.JScrollPane();
-        JTableCarreraUni2 = new javax.swing.JTable();
+        jTablePersonasUser = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -60,21 +73,21 @@ public class UsuariosForm extends javax.swing.JDialog {
         jLabel50.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel50.setText("Buscar");
 
-        JTableCarreraUni2.setBackground(new java.awt.Color(231, 253, 255));
-        JTableCarreraUni2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        JTableCarreraUni2.setModel(new javax.swing.table.DefaultTableModel(
+        jTablePersonasUser.setBackground(new java.awt.Color(231, 253, 255));
+        jTablePersonasUser.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTablePersonasUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Documento", "Nombre y Apellidos"
+                "Id", "Documento", "Nombre y Apellidos", "Telefono", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false
+                false, true, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -85,12 +98,17 @@ public class UsuariosForm extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        JTableCarreraUni2.setGridColor(new java.awt.Color(204, 204, 204));
-        JTableCarreraUni2.setRowHeight(30);
-        JTableCarreraUni2.setShowGrid(true);
-        JTableCarreraUni2.setShowVerticalLines(false);
-        JTableCarreraUni2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane20.setViewportView(JTableCarreraUni2);
+        jTablePersonasUser.setGridColor(new java.awt.Color(204, 204, 204));
+        jTablePersonasUser.setRowHeight(30);
+        jTablePersonasUser.setShowGrid(true);
+        jTablePersonasUser.setShowVerticalLines(false);
+        jTablePersonasUser.getTableHeader().setReorderingAllowed(false);
+        jScrollPane20.setViewportView(jTablePersonasUser);
+        if (jTablePersonasUser.getColumnModel().getColumnCount() > 0) {
+            jTablePersonasUser.getColumnModel().getColumn(4).setMinWidth(100);
+            jTablePersonasUser.getColumnModel().getColumn(4).setPreferredWidth(100);
+            jTablePersonasUser.getColumnModel().getColumn(4).setMaxWidth(100);
+        }
 
         javax.swing.GroupLayout jDpersonasLayout = new javax.swing.GroupLayout(jDpersonas.getContentPane());
         jDpersonas.getContentPane().setLayout(jDpersonasLayout);
@@ -295,6 +313,45 @@ public class UsuariosForm extends javax.swing.JDialog {
         jDpersonas.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    //Usuarios
+    //==========================================================================
+    private void listarPeronas() {
+        modelPersona.addColumn("Id");
+        modelPersona.addColumn("Nombre y Apelldios");
+        modelPersona.addColumn("Documento");
+        modelPersona.addColumn("Telefono");       
+        modelPersona.addColumn("Estado");
+
+        jTablePersonasUser.setModel(modelPersona);
+        PersonaDAO personaDAO = new PersonaController(DatabaseConnection.getConnection());
+        PersonaService usuarioService = new PersonaService(personaDAO);
+        List<Persona> personas = usuarioService.listAllPersonas();
+        if (personas.size() > 0) {
+            SwingUtilities.invokeLater(() -> {
+                for (Persona p : personas) {
+                    Object[] fila = new Object[5];
+                    fila[0] = p.getId();
+                    fila[1] = p.getNombre_completo();
+                    fila[2] = p.getDocumento();
+                    fila[3] = p.getTelefono();
+                    fila[4] = p.getEstado();
+
+                    modelPersona.addRow(fila);
+                }
+                // Ocultar la columna ID
+                jTablePersonasUser.getColumnModel().getColumn(0).setMinWidth(0);
+                jTablePersonasUser.getColumnModel().getColumn(0).setMaxWidth(0);
+                jTablePersonasUser.getColumnModel().getColumn(0).setWidth(0);
+                jTablePersonasUser.getColumnModel().getColumn(0).setPreferredWidth(0);
+            });
+        } else {
+            System.out.println("La lista de libros está vacía.");
+        }
+    }
+
+    //==========================================================================
+    //fin de Usuarios
+    //==========================================================================
     /**
      * @param args the command line arguments
      */
@@ -338,7 +395,6 @@ public class UsuariosForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable JTableCarreraUni2;
     private javax.swing.JButton btn_cancelarLibro;
     private javax.swing.JButton btn_guardarLibro;
     private javax.swing.JButton btn_nuevoLibro;
@@ -354,6 +410,7 @@ public class UsuariosForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JScrollPane jScrollPane20;
+    private javax.swing.JTable jTablePersonasUser;
     private javax.swing.JComboBox<String> jcbxTipoDocumento;
     private javax.swing.JComboBox<String> jcbxTipoDocumento1;
     private javax.swing.JTextField txt_buscarLibroPres2;

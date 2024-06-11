@@ -24,8 +24,8 @@ public class PersonaService {
         personaDAO.create(persona);
     }
 
-    public List<Persona> readAll() {
-        return personaDAO.readAll();
+    public List<Persona> listAllPersonas() {
+        return personaDAO.listAllPersonas();
     }
 
     public Persona readById(int id) {

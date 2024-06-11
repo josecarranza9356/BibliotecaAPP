@@ -11,6 +11,7 @@ public class Persona {
     private String documento;
     private String nombre;
     private String apellidos;
+    private String nombre_completo;
     private String telefono;
     private String direccion;
     private String estado;
@@ -27,6 +28,14 @@ public class Persona {
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.estado = estado;
+    }
+
+    public Persona(int id, String nombre_completo, String documento, String telefono, String estado) {
+        this.id = id;
+        this.nombre_completo = nombre_completo;
+        this.documento = documento;
+        this.telefono = telefono;
         this.estado = estado;
     }
 
@@ -70,6 +79,14 @@ public class Persona {
         this.apellidos = apellidos;
     }
 
+    public String getNombre_completo() {
+        return nombre_completo;
+    }
+
+    public void setNombre_completo(String nombre_completo) {
+        this.nombre_completo = nombre_completo;
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -93,7 +110,6 @@ public class Persona {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
 
+   
 }

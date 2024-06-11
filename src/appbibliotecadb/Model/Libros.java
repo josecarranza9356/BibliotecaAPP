@@ -12,37 +12,40 @@ import java.util.Date;
  */
 public class Libros {
 
-    private static int ultimoId = 0; // Campo para almacenar el último ID utilizado
     private int id;
     private String titulo;
-    private String autor;
-    private String editorial;
-    private String materia;
-    private Integer cantidad;
+    private int id_autor;
+    private int id_editorial;
+    private int id_categoria;
+    private String nombre_Autor;
+    private String nombre_Editorial;
+    private String categoria;
+    private int cantidad;
+    private Date A_publicacion;
+    private String estado;
 
     
-    private Date aPublicacion;
-
-    private String descripcion;
-
-    public Libros() {
-        // Incrementar el ID automáticamente cada vez que se crea un nuevo libro
-        ultimoId++;
-        id = ultimoId;
-    }
-
-    public Libros(int id, String titulo, String autor, String editorial, String materia, Integer cantidad, Date aPublicacion, String descripcion) {
+    public Libros(int id, String titulo, int id_autor, int id_editorial, int id_categoria, int cantidad, Date A_publicacion, String estado) {
         this.id = id;
         this.titulo = titulo;
-        this.autor = autor;
-        this.editorial = editorial;
-        this.materia = materia;
+        this.id_autor = id_autor;
+        this.id_editorial = id_editorial;
+        this.id_categoria = id_categoria;
         this.cantidad = cantidad;
-        this.aPublicacion = aPublicacion;
-        this.descripcion = descripcion;
+        this.A_publicacion = A_publicacion;
+        this.estado = estado;
     }
 
-  
+    public Libros(int id, String titulo, String nombre_Autor, String nombre_Editorial, String categoria, int cantidad, Date A_publicacion, String estado) {
+        this.id = id;
+        this.titulo = titulo;
+        this.nombre_Autor = nombre_Autor;
+        this.nombre_Editorial = nombre_Editorial;
+        this.categoria = categoria;
+        this.cantidad = cantidad;
+        this.A_publicacion = A_publicacion;
+        this.estado = estado;
+    }
 
     public int getId() {
         return id;
@@ -60,52 +63,78 @@ public class Libros {
         this.titulo = titulo;
     }
 
-    public String getAutor() {
-        return autor;
+    public int getId_autor() {
+        return id_autor;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setId_autor(int id_autor) {
+        this.id_autor = id_autor;
     }
 
-    public String getEditorial() {
-        return editorial;
+    public int getId_editorial() {
+        return id_editorial;
     }
 
-    public void setEditorial(String editorial) {
-        this.editorial = editorial;
+    public void setId_editorial(int id_editorial) {
+        this.id_editorial = id_editorial;
     }
 
-    public String getMateria() {
-        return materia;
+    public int getId_categoria() {
+        return id_categoria;
     }
 
-    public void setMateria(String materia) {
-        this.materia = materia;
+    public void setId_categoria(int id_categoria) {
+        this.id_categoria = id_categoria;
     }
 
-    public Integer getCantidad() {
+    public String getNombre_Autor() {
+        return nombre_Autor;
+    }
+
+    public void setNombre_Autor(String nombre_Autor) {
+        this.nombre_Autor = nombre_Autor;
+    }
+
+    public String getNombre_Editorial() {
+        return nombre_Editorial;
+    }
+
+    public void setNombre_Editorial(String nombre_Editorial) {
+        this.nombre_Editorial = nombre_Editorial;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Date getaPublicacion() {
-        return aPublicacion;
+    public Date getA_publicacion() {
+        return A_publicacion;
     }
 
-    public void setaPublicacion(Date aPublicacion) {
-        this.aPublicacion = aPublicacion;
+    public void setA_publicacion(Date A_publicacion) {
+        this.A_publicacion = A_publicacion;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
+
+   
 
 }
