@@ -25,11 +25,11 @@ public class AppBibliotecaDB {
         FlatMacLightLaf.setup();
 
         //ingresar a login
-        Login login_user = new Login();
-        login_user.setVisible(true);
+        //Login login_user = new Login();
+        //login_user.setVisible(true);
         //ingresar a menu
-        //Menu menu = new Menu();
-       // menu.setVisible(true);
+        Menu menu = new Menu();
+        menu.setVisible(true);
 
         
 
