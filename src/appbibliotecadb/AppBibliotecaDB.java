@@ -4,7 +4,6 @@
  */
 package appbibliotecadb;
 
-
 import appbibliotecadb.View.Login;
 import appbibliotecadb.View.Menu;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -31,7 +30,14 @@ public class AppBibliotecaDB {
         Menu menu = new Menu();
         menu.setVisible(true);
 
-        
+        System.out.println("holamundo");
+        System.out.println("holamundo");
+        System.out.println("holamundo");
+        System.out.println("holamundo");
+        System.out.println("holamundo");
+        System.out.println("holamundo");
+        System.out.println("holamundo");
+        System.out.println("holamundo");
 
     }
 
