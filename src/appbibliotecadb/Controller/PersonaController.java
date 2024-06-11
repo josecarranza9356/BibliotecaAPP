@@ -47,14 +47,8 @@ public class PersonaController implements PersonaDAO {
     }
 
     @Override
-    public List<Persona> listAllPersonas() {
-        String sql = "SELECT\n"
-                + "    p.id,\n"
-                + "    CONCAT(p.nombre, ' ', p.apellidos) AS nombre_completo,\n"
-                + "    p.documento,   \n"
-                + "    p.telefono,\n"
-                + "    p.estado \n"
-                + "FROM persona p ORDER BY  p.id DESC;";
+    public List<Persona> readAll() {
+        String sql = "SELECT * FROM persona";
         List<Persona> personas = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
@@ -62,9 +56,12 @@ public class PersonaController implements PersonaDAO {
             while (resultSet.next()) {
                 Persona persona = new Persona(
                         resultSet.getInt("id"),
-                        resultSet.getString("nombre_completo"),
+                        resultSet.getInt("id_tipo_documento"),
                         resultSet.getString("documento"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("apellidos"),
                         resultSet.getString("telefono"),
+                        resultSet.getString("direccion"),
                         resultSet.getString("estado")
                 );
                 personas.add(persona);

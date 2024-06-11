@@ -5,22 +5,14 @@
 package appbibliotecadb.View;
 
 import appbibliotecadb.Controller.EstudianteController;
-import appbibliotecadb.Controller.LibroController;
 import appbibliotecadb.Controller.PersonaController;
-import appbibliotecadb.Controller.UsuarioController;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import appbibliotecadb.Dao.EstudianteDAO;
-import appbibliotecadb.Dao.LibroDAO;
 import appbibliotecadb.Dao.PersonaDAO;
-import appbibliotecadb.Dao.UsuarioDao;
 import appbibliotecadb.Model.Estudiante;
-import appbibliotecadb.Model.Libros;
 import appbibliotecadb.Model.Persona;
-import appbibliotecadb.Model.Usuario;
 import appbibliotecadb.Service.EstudianteService;
-import appbibliotecadb.Service.LibroService;
 import appbibliotecadb.Service.PersonaService;
-import appbibliotecadb.Service.UsuarioService;
 
 import java.io.IOException;
 
@@ -42,25 +34,16 @@ import conection.DatabaseConnection;
  */
 public class Menu extends javax.swing.JFrame {
 
-    private DefaultTableModel modeloEstudiantes;
-    private DefaultTableModel modeloLibros;
-    private DefaultTableModel modeloUsuario;
+    private DefaultTableModel modelo;
 
     public Menu() throws IOException {
         FlatMacLightLaf.setup();
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        // Inicializar los modelos de tabla
-        modeloEstudiantes = new DefaultTableModel();
-        modeloLibros = new DefaultTableModel();
-        modeloUsuario = new DefaultTableModel();
-
         //listar personas
         //listarPersonas();
-        listarEstudiantes();
-        listarLibros();
-        listarUsuarios();
+        //listarEstudiantes();
 
     }
 
@@ -121,7 +104,7 @@ public class Menu extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         btnNew_libro = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
-        JTable_Libro = new javax.swing.JTable();
+        jdataTable_listaLibro = new javax.swing.JTable();
         txt_buscarLibro = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
@@ -136,7 +119,7 @@ public class Menu extends javax.swing.JFrame {
         jP_Usuarios = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane10 = new javax.swing.JScrollPane();
-        jtableUsuarios = new javax.swing.JTable();
+        jTableEstudiante1 = new javax.swing.JTable();
         btnNew_estudiante1 = new javax.swing.JButton();
         txt_buscar_estudiante1 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -542,7 +525,7 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel15)
                 .addGap(20, 20, 20)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 271, Short.MAX_VALUE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
@@ -698,9 +681,9 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        JTable_Libro.setBackground(new java.awt.Color(231, 253, 255));
-        JTable_Libro.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        JTable_Libro.setModel(new javax.swing.table.DefaultTableModel(
+        jdataTable_listaLibro.setBackground(new java.awt.Color(231, 253, 255));
+        jdataTable_listaLibro.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jdataTable_listaLibro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -723,21 +706,21 @@ public class Menu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        JTable_Libro.setToolTipText("");
-        JTable_Libro.setGridColor(new java.awt.Color(204, 204, 204));
-        JTable_Libro.setRowHeight(35);
-        JTable_Libro.setShowGrid(true);
-        JTable_Libro.setShowVerticalLines(false);
-        JTable_Libro.addMouseListener(new java.awt.event.MouseAdapter() {
+        jdataTable_listaLibro.setToolTipText("");
+        jdataTable_listaLibro.setGridColor(new java.awt.Color(204, 204, 204));
+        jdataTable_listaLibro.setRowHeight(35);
+        jdataTable_listaLibro.setShowGrid(true);
+        jdataTable_listaLibro.setShowVerticalLines(false);
+        jdataTable_listaLibro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JTable_LibroMouseClicked(evt);
+                jdataTable_listaLibroMouseClicked(evt);
             }
         });
-        jScrollPane6.setViewportView(JTable_Libro);
-        if (JTable_Libro.getColumnModel().getColumnCount() > 0) {
-            JTable_Libro.getColumnModel().getColumn(0).setMinWidth(40);
-            JTable_Libro.getColumnModel().getColumn(0).setPreferredWidth(40);
-            JTable_Libro.getColumnModel().getColumn(0).setMaxWidth(40);
+        jScrollPane6.setViewportView(jdataTable_listaLibro);
+        if (jdataTable_listaLibro.getColumnModel().getColumnCount() > 0) {
+            jdataTable_listaLibro.getColumnModel().getColumn(0).setMinWidth(40);
+            jdataTable_listaLibro.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jdataTable_listaLibro.getColumnModel().getColumn(0).setMaxWidth(40);
         }
 
         txt_buscarLibro.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -928,9 +911,9 @@ public class Menu extends javax.swing.JFrame {
         jPanel14.setBackground(new java.awt.Color(237, 237, 237));
         jPanel14.setToolTipText("");
 
-        jtableUsuarios.setBackground(new java.awt.Color(231, 253, 255));
-        jtableUsuarios.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jtableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        jTableEstudiante1.setBackground(new java.awt.Color(231, 253, 255));
+        jTableEstudiante1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTableEstudiante1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -956,16 +939,16 @@ public class Menu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jtableUsuarios.setGridColor(new java.awt.Color(204, 204, 204));
-        jtableUsuarios.setRowHeight(35);
-        jtableUsuarios.setShowGrid(true);
-        jtableUsuarios.setShowVerticalLines(false);
-        jtableUsuarios.getTableHeader().setReorderingAllowed(false);
-        jScrollPane10.setViewportView(jtableUsuarios);
-        if (jtableUsuarios.getColumnModel().getColumnCount() > 0) {
-            jtableUsuarios.getColumnModel().getColumn(0).setMinWidth(40);
-            jtableUsuarios.getColumnModel().getColumn(0).setPreferredWidth(40);
-            jtableUsuarios.getColumnModel().getColumn(0).setMaxWidth(40);
+        jTableEstudiante1.setGridColor(new java.awt.Color(204, 204, 204));
+        jTableEstudiante1.setRowHeight(35);
+        jTableEstudiante1.setShowGrid(true);
+        jTableEstudiante1.setShowVerticalLines(false);
+        jTableEstudiante1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane10.setViewportView(jTableEstudiante1);
+        if (jTableEstudiante1.getColumnModel().getColumnCount() > 0) {
+            jTableEstudiante1.getColumnModel().getColumn(0).setMinWidth(40);
+            jTableEstudiante1.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jTableEstudiante1.getColumnModel().getColumn(0).setMaxWidth(40);
         }
 
         btnNew_estudiante1.setBackground(new java.awt.Color(105, 162, 168));
@@ -1343,9 +1326,9 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTablePrestamosMouseClicked
 
-    private void JTable_LibroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTable_LibroMouseClicked
+    private void jdataTable_listaLibroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jdataTable_listaLibroMouseClicked
 
-    }//GEN-LAST:event_JTable_LibroMouseClicked
+    }//GEN-LAST:event_jdataTable_listaLibroMouseClicked
 
     private void txt_buscarLibroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscarLibroKeyPressed
 
@@ -1361,7 +1344,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_buscar_estudianteActionPerformed
 
     private void btnNew_estudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew_estudiante1ActionPerformed
-        // Instancia del formulario prestamos form
+       // Instancia del formulario prestamos form
         UsuariosForm usuariosForm = new UsuariosForm(this, true); // `this` se refiere al Frame actual, `true` indica que es modal
         // Muestra el formulario
         usuariosForm.setVisible(true);
@@ -1383,153 +1366,98 @@ public class Menu extends javax.swing.JFrame {
 
     }
 
-    //==========================================================================   
-    //Estudiantes
+    //==========================================================================
+    //Listar Personas
+    //==========================================================================
+    private void listarPersonas() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Tipo Documento");
+        modelo.addColumn("Documento");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellidos");
+        modelo.addColumn("Teléfono");
+        modelo.addColumn("Dirección");
+        modelo.addColumn("Estado");
+        jTableEstudiante.setModel(modelo);
+        PersonaDAO personaDAO = new PersonaController(DatabaseConnection.getConnection());
+        PersonaService personaService = new PersonaService(personaDAO);
+        List<Persona> personas = personaService.readAll();
+        if (personas.size() > 0) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    for (Persona p : personas) {
+                        Object[] fila = new Object[8];
+                        fila[0] = p.getId();
+                        fila[1] = p.getId_tipo_documento();
+                        fila[2] = p.getDocumento();
+                        fila[3] = p.getNombre();
+                        fila[4] = p.getApellidos();
+                        fila[5] = p.getTelefono();
+                        fila[6] = p.getDireccion();
+                        fila[7] = p.getEstado();
+                        modelo.addRow(fila);
+                    }
+                }
+            });
+        } else {
+            System.out.println("La lista de personas está vacía.");
+        }
+    }
+    //==========================================================================
+    //fin de listar Personas listarEstudiantes
+    //==========================================================================
+
+    //==========================================================================
+    //Listar estudiantes
     //==========================================================================
     private void listarEstudiantes() {
-        modeloEstudiantes.addColumn("Id");
-        modeloEstudiantes.addColumn("Codigo");
-        modeloEstudiantes.addColumn("Nombre y Apellidos");
-        modeloEstudiantes.addColumn("Documento");
-        modeloEstudiantes.addColumn("Telefono");
-        modeloEstudiantes.addColumn("Dirección");
-        modeloEstudiantes.addColumn("Nivel/Ciclo");
-        modeloEstudiantes.addColumn("Grado/Edad");
-        modeloEstudiantes.addColumn("Sección");
-        modeloEstudiantes.addColumn("Turno");
-        modeloEstudiantes.addColumn("Estado");
-
-        jTableEstudiante.setModel(modeloEstudiantes);
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Id");
+        modelo.addColumn("Tipo Documento");
+        modelo.addColumn("Documento");
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Nombre y Apellidos");
+        modelo.addColumn("Teléfono");
+        modelo.addColumn("Dirección");
+        modelo.addColumn("Estado");
+        jTableEstudiante.setModel(modelo);
         EstudianteDAO estudianteDAO = new EstudianteController(DatabaseConnection.getConnection());
         EstudianteService estudianteService = new EstudianteService(estudianteDAO);
         List<Estudiante> estudiantes = estudianteService.readAll();
         if (estudiantes.size() > 0) {
-            SwingUtilities.invokeLater(() -> {
-                for (Estudiante p : estudiantes) {
-                    Object[] fila = new Object[11];
-                    fila[0] = p.getId();
-                    fila[1] = p.getCodigo();
-                    fila[2] = p.getNombre_completo();
-                    fila[3] = p.getT_documento();
-                    fila[4] = p.getTelefono();
-                    fila[5] = p.getDireccion();
-                    fila[6] = p.getNivel_Ciclo();
-                    fila[7] = p.getGrado_Edad();
-                    fila[8] = p.getSeccion();
-                    fila[9] = p.getTurno();
-                    fila[10] = p.getEstado();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    for (Estudiante p : estudiantes) {
+                        Object[] fila = new Object[8];
+                        fila[0] = p.getId();
+                        fila[1] = p.getTipo_documento();
+                        fila[2] = p.getDocumento();
+                        fila[3] = p.getCodigo();
+                        fila[4] = p.getNombre_completo();
+                        fila[5] = p.getTelefono();
+                        fila[6] = p.getDireccion();
+                        fila[7] = p.getEstado();
+                        modelo.addRow(fila);
 
-                    modeloEstudiantes.addRow(fila);
+                    }
+                     // Ocultar la columna ID
+                    jTableEstudiante.getColumnModel().getColumn(0).setMinWidth(0);
+                    jTableEstudiante.getColumnModel().getColumn(0).setMaxWidth(0);
+                    jTableEstudiante.getColumnModel().getColumn(0).setWidth(0);
+                    jTableEstudiante.getColumnModel().getColumn(0).setPreferredWidth(0);
                 }
-                // Ocultar la columna ID
-                jTableEstudiante.getColumnModel().getColumn(0).setMinWidth(0);
-                jTableEstudiante.getColumnModel().getColumn(0).setMaxWidth(0);
-                jTableEstudiante.getColumnModel().getColumn(0).setWidth(0);
-                jTableEstudiante.getColumnModel().getColumn(0).setPreferredWidth(0);
             });
         } else {
-            System.out.println("La lista de estudiantes está vacía.");
+            System.out.println("La lista de personas está vacía.");
         }
     }
     //==========================================================================
-    //fin de estudiantes 
+    //fin de listar Personas 
     //==========================================================================
 
-    //==========================================================================
-    //Libros
-    //==========================================================================
-    private void listarLibros() {
-        modeloLibros.addColumn("Id");
-        modeloLibros.addColumn("Titulo");
-        modeloLibros.addColumn("Autor");
-        modeloLibros.addColumn("Editorial");
-        modeloLibros.addColumn("Categoria");
-        modeloLibros.addColumn("Cantidad");
-        modeloLibros.addColumn("Fecha de Publicación");
-        modeloLibros.addColumn("Estado");
-
-        JTable_Libro.setModel(modeloLibros);
-        LibroDAO libroDAO = new LibroController(DatabaseConnection.getConnection());
-        LibroService libroService = new LibroService(libroDAO);
-        List<Libros> libros = libroService.listAll();
-        if (libros.size() > 0) {
-            SwingUtilities.invokeLater(() -> {
-                for (Libros p : libros) {
-                    Object[] fila = new Object[8];
-                    fila[0] = p.getId();
-                    fila[1] = p.getTitulo();
-                    fila[2] = p.getNombre_Autor();
-                    fila[3] = p.getNombre_Editorial();
-                    fila[4] = p.getCategoria();
-                    fila[5] = p.getCantidad();
-                    fila[6] = p.getA_publicacion();
-                    fila[7] = p.getEstado();
-
-                    modeloLibros.addRow(fila);
-                }
-                // Ocultar la columna ID
-                JTable_Libro.getColumnModel().getColumn(0).setMinWidth(0);
-                JTable_Libro.getColumnModel().getColumn(0).setMaxWidth(0);
-                JTable_Libro.getColumnModel().getColumn(0).setWidth(0);
-                JTable_Libro.getColumnModel().getColumn(0).setPreferredWidth(0);
-            });
-        } else {
-            System.out.println("La lista de libros está vacía.");
-        }
-    }
-    //==========================================================================
-    //fin de libros 
-    //==========================================================================
-
-    //==========================================================================
-    //Usuarios
-    //==========================================================================
-    private void listarUsuarios() {
-        modeloUsuario.addColumn("Id");
-        modeloUsuario.addColumn("nombre_completo");
-        modeloUsuario.addColumn("tipo_documento");
-        modeloUsuario.addColumn("telefono");
-        modeloUsuario.addColumn("rol_nombre");
-        modeloUsuario.addColumn("usuario");
-        modeloUsuario.addColumn("contraseña");
-        modeloUsuario.addColumn("Estado");
-
-        jtableUsuarios.setModel(modeloUsuario);
-        UsuarioDao usuarioDAO = new UsuarioController(DatabaseConnection.getConnection());
-        UsuarioService usuarioService = new UsuarioService(usuarioDAO);
-        List<Usuario> usuarios = usuarioService.listAll();
-        if (usuarios.size() > 0) {
-            SwingUtilities.invokeLater(() -> {
-                for (Usuario p : usuarios) {
-                    Object[] fila = new Object[8];
-                    fila[0] = p.getId();
-                    fila[1] = p.getNombre_completo();
-                    fila[2] = p.getT_documento();
-                    fila[3] = p.getTelefono();
-                    fila[4] = p.getRol_nombre();
-                    fila[5] = p.getUsuario();
-                    fila[6] = p.getContraseña();
-                    fila[7] = p.getEstado();
-
-                    modeloUsuario.addRow(fila);
-                }               
-                // Ocultar la columna ID
-                jtableUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
-                jtableUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
-                jtableUsuarios.getColumnModel().getColumn(0).setWidth(0);
-                jtableUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
-            });
-        } else {
-            System.out.println("La lista de libros está vacía.");
-        }
-    }
-
-    //==========================================================================
-    //fin de Usuarios
-    //==========================================================================
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable JTable_Libro;
     private javax.swing.JLabel LblCantEstudiantes;
     private javax.swing.JLabel LblCantEstudiantes1;
     private javax.swing.JButton btnNew_estudiante;
@@ -1540,6 +1468,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnReporteLibros;
     private javax.swing.JButton btnReportePrestamos;
     private javax.swing.JButton btnVerReportes;
+    private javax.swing.JButton btnVerReportes1;
+    private javax.swing.JButton btnVerReportes2;
+    private javax.swing.JButton btnVerReportes3;
     private javax.swing.JButton btn_salir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1547,6 +1478,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1554,7 +1486,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
@@ -1574,8 +1511,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jP_Usuarios;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
@@ -1598,14 +1538,18 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableEstudiante;
+    private javax.swing.JTable jTableEstudiante1;
     private javax.swing.JTable jTablePrestamos;
     private javax.swing.JTabbedPane jTp_Dasboart;
+    private javax.swing.JTable jdataTable_listaLibro;
     private javax.swing.JTable jtableReportesEstudiantes;
     private javax.swing.JTable jtableReportesLibros;
     private javax.swing.JTable jtableReportesPrestamos;
-    private javax.swing.JTable jtableUsuarios;
     private javax.swing.JLabel lblCantLibros;
     private javax.swing.JLabel lblCantPrestamos;
     private javax.swing.JTextField txt_buscarLibro;

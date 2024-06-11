@@ -43,40 +43,20 @@ public class EstudianteController implements EstudianteDAO {
 
     @Override
     public List<Estudiante> readAll() {
-        String sql = "SELECT \n"
-                + "    estudiante.id,\n"
-                + "    estudiante.codigo,\n"
-                + "    CONCAT(persona.nombre, ' ', persona.apellidos) AS nombre_completo,\n"
-                + "    CONCAT(tipo_documento.nombre, ': ', persona.documento) AS t_documento,\n"
-                + "    persona.telefono,\n"
-                + "    persona.direccion,\n"
-                + "    estudiante.Nivel_Ciclo,\n"
-                + "    estudiante.Grado_Edad,\n"
-                + "    estudiante.seccion,\n"
-                + "    estudiante.Turno,\n"
-                + "    estudiante.estado\n"
-                + "FROM \n"
-                + "    estudiante\n"
-                + "JOIN \n"
-                + "    persona ON estudiante.id_persona = persona.id\n"
-                + "JOIN \n"
-                + "    tipo_documento ON persona.id_tipo_documento = tipo_documento.id ORDER BY estudiante.id DESC;";
+        String sql = "SELECT td.nombre AS tipo_documento,p.documento,e.codigo,CONCAT(p.nombre, ' ', p.apellidos) AS nombre_completo,p.telefono,p.direccion, e.estado AS estado\n"
+                + "FROM estudiante e JOIN persona p ON e.id_persona = p.id JOIN tipo_documento td ON p.id_tipo_documento = td.id;";
         List<Estudiante> estudiantes = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 Estudiante estudiante = new Estudiante(
-                        resultSet.getInt("id"),
+                        resultSet.getString("tipo_documento"),
+                        resultSet.getString("documento"),
                         resultSet.getString("codigo"),
                         resultSet.getString("nombre_completo"),
-                        resultSet.getString("t_documento"),
                         resultSet.getString("telefono"),
                         resultSet.getString("direccion"),
-                        resultSet.getString("Nivel_Ciclo"),
-                        resultSet.getString("Grado_Edad"),
-                        resultSet.getString("seccion"),
-                        resultSet.getString("Turno"),
                         resultSet.getString("estado")
                 );
                 estudiantes.add(estudiante);
@@ -101,12 +81,8 @@ public class EstudianteController implements EstudianteDAO {
             if (resultSet.next()) {
                 estudiante = new Estudiante(
                         resultSet.getInt("id"),
-                        resultSet.getInt("codigo"),
-                        resultSet.getString("id_persona"),
-                        resultSet.getString("estado"),
-                        resultSet.getString("estado"),
-                        resultSet.getString("estado"),
-                        resultSet.getString("estado"),
+                        resultSet.getString("codigo"),
+                        resultSet.getInt("id_persona"),
                         resultSet.getString("estado")
                 );
             }

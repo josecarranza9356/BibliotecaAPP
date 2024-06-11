@@ -4,23 +4,10 @@
  */
 package appbibliotecadb.Dao;
 
-import appbibliotecadb.Model.Libros;
-import java.util.List;
-
 /**
  *
  * @author JoseCv14
  */
 public interface LibroDAO {
-
-    void create(Libros libros);
-
-    List<Libros> listAll();
-
-    Libros readById(int id);
-
-    void update(Libros libros);
-
-    void delete(int id);
-
+    
 }
