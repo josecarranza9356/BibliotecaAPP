@@ -37,8 +37,8 @@ public class LibroController implements LibroDAO {
                 + "    libro.id,\n"
                 + "    libro.titulo,\n"
                 + "    autor.nombre AS autor,\n"
-                + "    editorial.nombre AS nombre_editorial,\n"
-                + "    categoria.nombre AS nombre_categoria,\n"
+                + "    libro.editorial,\n"
+                + "    libro.categoria,\n"
                 + "    libro.cantidad,\n"
                 + "    libro.A_publicacion,\n"
                 + "    libro.estado\n"
@@ -46,11 +46,7 @@ public class LibroController implements LibroDAO {
                 + "FROM \n"
                 + "    libro\n"
                 + "JOIN \n"
-                + "    autor ON libro.id_autor = autor.id\n"
-                + "JOIN \n"
-                + "    editorial ON libro.id_editorial = editorial.id\n"
-                + "JOIN \n"
-                + "    categoria ON libro.id_categoria = categoria.id ORDER BY libro.id DESC;";
+                + "    autor ON libro.id_autor = autor.id ORDER BY libro.id DESC;";
 
         List<Libros> libros = new ArrayList<>();
 
@@ -61,8 +57,8 @@ public class LibroController implements LibroDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("titulo"),
                         resultSet.getString("autor"),
-                        resultSet.getString("nombre_editorial"),
-                        resultSet.getString("nombre_categoria"),
+                        resultSet.getString("editorial"),
+                        resultSet.getString("categoria"),
                         resultSet.getInt("cantidad"),
                         resultSet.getDate("A_publicacion"),
                         resultSet.getString("estado")

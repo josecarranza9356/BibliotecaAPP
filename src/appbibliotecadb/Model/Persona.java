@@ -7,7 +7,6 @@ package appbibliotecadb.Model;
 public class Persona {
 
     private int id;
-    private int id_tipo_documento;
     private String documento;
     private String nombre;
     private String apellidos;
@@ -20,9 +19,8 @@ public class Persona {
 
     }
 
-    public Persona(int id, int id_tipo_documento, String documento, String nombre, String apellidos, String telefono, String direccion, String estado) {
-        this.id = id;
-        this.id_tipo_documento = id_tipo_documento;
+    public Persona(int id, String documento, String nombre, String apellidos, String telefono, String direccion, String estado) {
+        this.id = id;       
         this.documento = documento;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -46,14 +44,7 @@ public class Persona {
     public void setId(int id) {
         this.id = id;
     }
-
-    public int getId_tipo_documento() {
-        return id_tipo_documento;
-    }
-
-    public void setId_tipo_documento(int id_tipo_documento) {
-        this.id_tipo_documento = id_tipo_documento;
-    }
+   
 
     public String getDocumento() {
         return documento;

@@ -15,33 +15,33 @@ public class Libros {
     private int id;
     private String titulo;
     private int id_autor;
-    private int id_editorial;
-    private int id_categoria;
-    private String nombre_Autor;
-    private String nombre_Editorial;
+    private String editorial;
     private String categoria;
+    private String nombre_Autor;  
     private int cantidad;
     private Date A_publicacion;
     private String estado;
 
-    
-    public Libros(int id, String titulo, int id_autor, int id_editorial, int id_categoria, int cantidad, Date A_publicacion, String estado) {
+    public Libros() {
+    }
+
+    public Libros(int id, String titulo, int id_autor, String editorial, String categoria, int cantidad, Date A_publicacion, String estado) {
         this.id = id;
         this.titulo = titulo;
         this.id_autor = id_autor;
-        this.id_editorial = id_editorial;
-        this.id_categoria = id_categoria;
+        this.editorial = editorial;
+        this.categoria = categoria;
         this.cantidad = cantidad;
         this.A_publicacion = A_publicacion;
         this.estado = estado;
     }
 
-    public Libros(int id, String titulo, String nombre_Autor, String nombre_Editorial, String categoria, int cantidad, Date A_publicacion, String estado) {
+    public Libros(int id, String titulo, String editorial, String categoria, String nombre_Autor, int cantidad, Date A_publicacion, String estado) {
         this.id = id;
         this.titulo = titulo;
-        this.nombre_Autor = nombre_Autor;
-        this.nombre_Editorial = nombre_Editorial;
+        this.editorial = editorial;
         this.categoria = categoria;
+        this.nombre_Autor = nombre_Autor;
         this.cantidad = cantidad;
         this.A_publicacion = A_publicacion;
         this.estado = estado;
@@ -71,36 +71,12 @@ public class Libros {
         this.id_autor = id_autor;
     }
 
-    public int getId_editorial() {
-        return id_editorial;
+    public String getEditorial() {
+        return editorial;
     }
 
-    public void setId_editorial(int id_editorial) {
-        this.id_editorial = id_editorial;
-    }
-
-    public int getId_categoria() {
-        return id_categoria;
-    }
-
-    public void setId_categoria(int id_categoria) {
-        this.id_categoria = id_categoria;
-    }
-
-    public String getNombre_Autor() {
-        return nombre_Autor;
-    }
-
-    public void setNombre_Autor(String nombre_Autor) {
-        this.nombre_Autor = nombre_Autor;
-    }
-
-    public String getNombre_Editorial() {
-        return nombre_Editorial;
-    }
-
-    public void setNombre_Editorial(String nombre_Editorial) {
-        this.nombre_Editorial = nombre_Editorial;
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
     }
 
     public String getCategoria() {
@@ -109,6 +85,14 @@ public class Libros {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public String getNombre_Autor() {
+        return nombre_Autor;
+    }
+
+    public void setNombre_Autor(String nombre_Autor) {
+        this.nombre_Autor = nombre_Autor;
     }
 
     public int getCantidad() {
@@ -135,6 +119,8 @@ public class Libros {
         this.estado = estado;
     }
 
+    
+    
    
 
 }

@@ -29,16 +29,15 @@ public class PersonaController implements PersonaDAO {
 
     @Override
     public void create(Persona persona) {
-        String sql = "INSERT INTO persona (id_tipo_documento, documento, nombre, apellidos, telefono, direccion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO persona (documento, nombre, apellidos, telefono, direccion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, persona.getId_tipo_documento());
-            statement.setString(2, persona.getDocumento());
-            statement.setString(3, persona.getNombre());
-            statement.setString(4, persona.getApellidos());
-            statement.setString(5, persona.getTelefono());
-            statement.setString(6, persona.getDireccion());
-            statement.setString(7, String.valueOf(persona.getEstado()));
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {           
+            statement.setString(1, persona.getDocumento());
+            statement.setString(2, persona.getNombre());
+            statement.setString(3, persona.getApellidos());
+            statement.setString(4, persona.getTelefono());
+            statement.setString(5, persona.getDireccion());
+            statement.setString(6, String.valueOf(persona.getEstado()));
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -89,7 +88,6 @@ public class PersonaController implements PersonaDAO {
             if (resultSet.next()) {
                 persona = new Persona(
                         resultSet.getInt("id"),
-                        resultSet.getInt("id_tipo_documento"),
                         resultSet.getString("documento"),
                         resultSet.getString("nombre"),
                         resultSet.getString("apellidos"),
@@ -111,14 +109,13 @@ public class PersonaController implements PersonaDAO {
         String sql = "UPDATE persona SET id_tipo_documento = ?, documento = ?, nombre = ?, apellidos = ?, telefono = ?, direccion = ?, estado = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, persona.getId_tipo_documento());
-            statement.setString(2, persona.getDocumento());
-            statement.setString(3, persona.getNombre());
-            statement.setString(4, persona.getApellidos());
-            statement.setString(5, persona.getTelefono());
-            statement.setString(6, persona.getDireccion());
-            statement.setString(7, String.valueOf(persona.getEstado()));
-            statement.setInt(8, persona.getId());
+            statement.setString(1, persona.getDocumento());
+            statement.setString(2, persona.getNombre());
+            statement.setString(3, persona.getApellidos());
+            statement.setString(4, persona.getTelefono());
+            statement.setString(5, persona.getDireccion());
+            statement.setString(6, String.valueOf(persona.getEstado()));
+            statement.setInt(7, persona.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {

@@ -4,13 +4,8 @@
  */
 package appbibliotecadb.View;
 
-import appbibliotecadb.Controller.TipoDocumentoController;
-import appbibliotecadb.Dao.TipoDocumentoDAO;
-import appbibliotecadb.Model.TipoDocumento;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+
 import javax.swing.JFrame;
-import conection.DatabaseConnection;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,8 +26,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Permite cerrar solo este formulario sin afectar a otros
         setLocationRelativeTo(null);
-
-        listarTipoDocumento();
+        
     }
 
     /**
@@ -372,17 +366,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbxTipoDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbxTipoDocumentoActionPerformed
-        TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoController(DatabaseConnection.getConnection());
-        int selectedIndex = jcbxTipoDocumento.getSelectedIndex();
-        if (selectedIndex >= 0) {
-            List<TipoDocumento> tiposDocumento = tipoDocumentoDAO.readAll();
-            if (selectedIndex < tiposDocumento.size()) {
-                TipoDocumento selectedTipoDocumento = tiposDocumento.get(selectedIndex);
-                int id = selectedTipoDocumento.getId();
-                // Now you can use the id variable
-                System.out.println("Selected ID: " + id);
-            }
-        }
+        
     }//GEN-LAST:event_jcbxTipoDocumentoActionPerformed
 
     private void btn_NuevoEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NuevoEstudianteActionPerformed
@@ -474,15 +458,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         });
     }
 
-    private void listarTipoDocumento() {
-        TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoController(DatabaseConnection.getConnection());
-        List<TipoDocumento> tipoDocumento = tipoDocumentoDAO.readAll();
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-        for (TipoDocumento td : tipoDocumento) {
-            modelo.addElement(td.getNombre());
-        }
-        jcbxTipoDocumento.setModel(modelo);
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JTableCarreraUni;

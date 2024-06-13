@@ -36,9 +36,8 @@ public class UsuarioController implements UsuarioDao {
 
         String sql = "SELECT\n"
                 + "    u.id,\n"
-                + "    r.nombre AS rol_nombre,        \n"
+                + "    u.nombre_rol,        \n"
                 + "    CONCAT(p.nombre, ' ', p.apellidos) AS nombre_completo,\n"
-                + "    CONCAT(td.nombre, ' _ ', p.documento) AS t_documento,    \n"
                 + "    p.telefono,\n"
                 + "    u.usuario,\n"
                 + "    u.contraseña,\n"
@@ -46,11 +45,7 @@ public class UsuarioController implements UsuarioDao {
                 + "FROM\n"
                 + "    usuario u\n"
                 + "JOIN\n"
-                + "    persona p ON u.id_persona = p.id\n"
-                + "JOIN\n"
-                + "    tipo_documento td ON p.id_tipo_documento = td.id\n"
-                + "JOIN\n"
-                + "    rol r ON u.id_rol = r.id ORDER BY u.id DESC;";
+                + "    persona p ON u.id_persona = p.id ORDER BY u.id DESC;";
 
         List<Usuario> usuarios = new ArrayList<>();
 
@@ -62,7 +57,7 @@ public class UsuarioController implements UsuarioDao {
                         resultSet.getString("nombre_completo"),
                         resultSet.getString("t_documento"),
                         resultSet.getString("telefono"),
-                        resultSet.getString("rol_nombre"),
+                        resultSet.getString("nombre_rol"),
                         resultSet.getString("usuario"),
                         resultSet.getString("contraseña"),
                         resultSet.getString("estado")
