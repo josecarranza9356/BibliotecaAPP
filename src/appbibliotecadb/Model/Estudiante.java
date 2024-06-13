@@ -14,7 +14,6 @@ public class Estudiante {
     private int id_persona;
     private String codigo;
     private String nombre_completo;
-    private String t_documento;
     private String telefono;
     private String direccion;
     private String Nivel_Ciclo;
@@ -26,11 +25,10 @@ public class Estudiante {
     public Estudiante() {
     }
 
-    public Estudiante(int id, String codigo, String nombre_completo, String t_documento, String telefono, String direccion, String Nivel_Ciclo, String Grado_Edad, String seccion, String Turno, String estado) {
+    public Estudiante(int id, String codigo, String nombre_completo, String telefono, String direccion, String Nivel_Ciclo, String Grado_Edad, String seccion, String Turno, String estado) {
         this.id = id;
         this.codigo = codigo;
-        this.nombre_completo = nombre_completo;
-        this.t_documento = t_documento;
+        this.nombre_completo = nombre_completo;        
         this.telefono = telefono;
         this.direccion = direccion;
         this.Nivel_Ciclo = Nivel_Ciclo;
@@ -83,14 +81,6 @@ public class Estudiante {
 
     public void setNombre_completo(String nombre_completo) {
         this.nombre_completo = nombre_completo;
-    }
-
-    public String getT_documento() {
-        return t_documento;
-    }
-
-    public void setT_documento(String t_documento) {
-        this.t_documento = t_documento;
     }
 
     public String getTelefono() {

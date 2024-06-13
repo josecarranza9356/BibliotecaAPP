@@ -4,13 +4,8 @@
  */
 package appbibliotecadb.View;
 
-import appbibliotecadb.Controller.TipoDocumentoController;
-import appbibliotecadb.Dao.TipoDocumentoDAO;
-import appbibliotecadb.Model.TipoDocumento;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+
 import javax.swing.JFrame;
-import conection.DatabaseConnection;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,8 +26,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Permite cerrar solo este formulario sin afectar a otros
         setLocationRelativeTo(null);
-
-        listarTipoDocumento();
+        
     }
 
     /**
@@ -60,8 +54,6 @@ public class EstudiantesForm extends javax.swing.JDialog {
         jLabel39 = new javax.swing.JLabel();
         txtNombreCompleto = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
-        jcbxTipoDocumento = new javax.swing.JComboBox<>();
-        jLabel38 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         txtDocumento = new javax.swing.JTextField();
         jLabel36 = new javax.swing.JLabel();
@@ -208,16 +200,6 @@ public class EstudiantesForm extends javax.swing.JDialog {
         jLabel34.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel34.setText("Nombre ");
 
-        jcbxTipoDocumento.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jcbxTipoDocumento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbxTipoDocumentoActionPerformed(evt);
-            }
-        });
-
-        jLabel38.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jLabel38.setText("Tipo Documento");
-
         jLabel33.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel33.setText("Documento");
 
@@ -260,15 +242,9 @@ public class EstudiantesForm extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel33)
                     .addComponent(jLabel3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcbxTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel38))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel33)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel34)
@@ -314,19 +290,15 @@ public class EstudiantesForm extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel3)
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel38))
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcbxTipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel34)
@@ -338,7 +310,9 @@ public class EstudiantesForm extends javax.swing.JDialog {
                                 .addComponent(txtNombreCompleto1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(20, 20, 20)
                         .addComponent(jLabel36))
-                    .addComponent(jLabel37, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(97, 97, 97)
+                        .addComponent(jLabel37)))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -370,20 +344,6 @@ public class EstudiantesForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jcbxTipoDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbxTipoDocumentoActionPerformed
-        TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoController(DatabaseConnection.getConnection());
-        int selectedIndex = jcbxTipoDocumento.getSelectedIndex();
-        if (selectedIndex >= 0) {
-            List<TipoDocumento> tiposDocumento = tipoDocumentoDAO.readAll();
-            if (selectedIndex < tiposDocumento.size()) {
-                TipoDocumento selectedTipoDocumento = tiposDocumento.get(selectedIndex);
-                int id = selectedTipoDocumento.getId();
-                // Now you can use the id variable
-                System.out.println("Selected ID: " + id);
-            }
-        }
-    }//GEN-LAST:event_jcbxTipoDocumentoActionPerformed
 
     private void btn_NuevoEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NuevoEstudianteActionPerformed
 
@@ -474,15 +434,7 @@ public class EstudiantesForm extends javax.swing.JDialog {
         });
     }
 
-    private void listarTipoDocumento() {
-        TipoDocumentoDAO tipoDocumentoDAO = new TipoDocumentoController(DatabaseConnection.getConnection());
-        List<TipoDocumento> tipoDocumento = tipoDocumentoDAO.readAll();
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-        for (TipoDocumento td : tipoDocumento) {
-            modelo.addElement(td.getNombre());
-        }
-        jcbxTipoDocumento.setModel(modelo);
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JTableCarreraUni;
@@ -495,7 +447,6 @@ public class EstudiantesForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
-    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
@@ -508,7 +459,6 @@ public class EstudiantesForm extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> jcbxCiclo1;
     private javax.swing.JComboBox<String> jcbxCiclo2;
     private javax.swing.JComboBox<String> jcbxCiclo3;
-    private javax.swing.JComboBox<String> jcbxTipoDocumento;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtNombreCompleto;

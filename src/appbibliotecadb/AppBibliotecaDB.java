@@ -21,7 +21,7 @@ public class AppBibliotecaDB {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
 
-        FlatMacLightLaf.setup();
+       FlatMacLightLaf.setup();
 
         //ingresar a login
         //Login login_user = new Login();
@@ -30,14 +30,7 @@ public class AppBibliotecaDB {
         Menu menu = new Menu();
         menu.setVisible(true);
 
-        System.out.println("holamundo");
-        System.out.println("holamundo");
-        System.out.println("holamundo");
-        System.out.println("holamundo");
-        System.out.println("holamundo");
-        System.out.println("holamundo");
-        System.out.println("holamundo");
-        System.out.println("holamundo");
+        
 
     }
 

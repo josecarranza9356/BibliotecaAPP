@@ -1406,18 +1406,17 @@ public class Menu extends javax.swing.JFrame {
         if (estudiantes.size() > 0) {
             SwingUtilities.invokeLater(() -> {
                 for (Estudiante p : estudiantes) {
-                    Object[] fila = new Object[11];
+                    Object[] fila = new Object[10];
                     fila[0] = p.getId();
                     fila[1] = p.getCodigo();
                     fila[2] = p.getNombre_completo();
-                    fila[3] = p.getT_documento();
-                    fila[4] = p.getTelefono();
-                    fila[5] = p.getDireccion();
-                    fila[6] = p.getNivel_Ciclo();
-                    fila[7] = p.getGrado_Edad();
-                    fila[8] = p.getSeccion();
-                    fila[9] = p.getTurno();
-                    fila[10] = p.getEstado();
+                    fila[3] = p.getTelefono();
+                    fila[4] = p.getDireccion();
+                    fila[5] = p.getNivel_Ciclo();
+                    fila[6] = p.getGrado_Edad();
+                    fila[7] = p.getSeccion();
+                    fila[8] = p.getTurno();
+                    fila[9] = p.getEstado();
 
                     modeloEstudiantes.addRow(fila);
                 }
@@ -1459,7 +1458,7 @@ public class Menu extends javax.swing.JFrame {
                     fila[0] = p.getId();
                     fila[1] = p.getTitulo();
                     fila[2] = p.getNombre_Autor();
-                    fila[3] = p.getNombre_Editorial();
+                    fila[3] = p.getEditorial();
                     fila[4] = p.getCategoria();
                     fila[5] = p.getCantidad();
                     fila[6] = p.getA_publicacion();
@@ -1487,7 +1486,7 @@ public class Menu extends javax.swing.JFrame {
     private void listarUsuarios() {
         modeloUsuario.addColumn("Id");
         modeloUsuario.addColumn("nombre_completo");
-        modeloUsuario.addColumn("tipo_documento");
+        modeloUsuario.addColumn("documento");
         modeloUsuario.addColumn("telefono");
         modeloUsuario.addColumn("rol_nombre");
         modeloUsuario.addColumn("usuario");

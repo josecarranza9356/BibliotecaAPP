@@ -47,7 +47,6 @@ public class EstudianteController implements EstudianteDAO {
                 + "    estudiante.id,\n"
                 + "    estudiante.codigo,\n"
                 + "    CONCAT(persona.nombre, ' ', persona.apellidos) AS nombre_completo,\n"
-                + "    CONCAT(tipo_documento.nombre, ': ', persona.documento) AS t_documento,\n"
                 + "    persona.telefono,\n"
                 + "    persona.direccion,\n"
                 + "    estudiante.Nivel_Ciclo,\n"
@@ -58,9 +57,7 @@ public class EstudianteController implements EstudianteDAO {
                 + "FROM \n"
                 + "    estudiante\n"
                 + "JOIN \n"
-                + "    persona ON estudiante.id_persona = persona.id\n"
-                + "JOIN \n"
-                + "    tipo_documento ON persona.id_tipo_documento = tipo_documento.id ORDER BY estudiante.id DESC;";
+                + "    persona ON estudiante.id_persona = persona.id ORDER BY estudiante.id DESC;";
         List<Estudiante> estudiantes = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
@@ -70,7 +67,6 @@ public class EstudianteController implements EstudianteDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("codigo"),
                         resultSet.getString("nombre_completo"),
-                        resultSet.getString("t_documento"),
                         resultSet.getString("telefono"),
                         resultSet.getString("direccion"),
                         resultSet.getString("Nivel_Ciclo"),
