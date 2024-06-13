@@ -52,7 +52,8 @@ public class EstudianteController implements EstudianteDAO {
                 + "    estudiante.Nivel_Ciclo,\n"
                 + "    estudiante.Grado_Edad,\n"
                 + "    estudiante.seccion,\n"
-                + "    estudiante.Turno,\n"
+                + "    estudiante.Turno,\n" + "   "
+                + "    estudiante.genero,\n"
                 + "    estudiante.estado\n"
                 + "FROM \n"
                 + "    estudiante\n"
@@ -69,10 +70,11 @@ public class EstudianteController implements EstudianteDAO {
                         resultSet.getString("nombre_completo"),
                         resultSet.getString("telefono"),
                         resultSet.getString("direccion"),
-                        resultSet.getString("Nivel_Ciclo"),
-                        resultSet.getString("Grado_Edad"),
+                        resultSet.getString("nivel_Ciclo"),
+                        resultSet.getString("grado_Edad"),
                         resultSet.getString("seccion"),
-                        resultSet.getString("Turno"),
+                        resultSet.getString("turno"),
+                        resultSet.getString("genero"),
                         resultSet.getString("estado")
                 );
                 estudiantes.add(estudiante);
