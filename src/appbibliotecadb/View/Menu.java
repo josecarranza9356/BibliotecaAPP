@@ -6,20 +6,20 @@ package appbibliotecadb.View;
 
 import appbibliotecadb.Controller.EstudianteController;
 import appbibliotecadb.Controller.LibroController;
-import appbibliotecadb.Controller.PersonaController;
+import appbibliotecadb.Controller.PrestamosController;
 import appbibliotecadb.Controller.UsuarioController;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import appbibliotecadb.Dao.EstudianteDAO;
 import appbibliotecadb.Dao.LibroDAO;
-import appbibliotecadb.Dao.PersonaDAO;
+import appbibliotecadb.Dao.PrestamoDAO;
 import appbibliotecadb.Dao.UsuarioDao;
 import appbibliotecadb.Model.Estudiante;
 import appbibliotecadb.Model.Libros;
-import appbibliotecadb.Model.Persona;
+import appbibliotecadb.Model.Prestamos;
 import appbibliotecadb.Model.Usuario;
 import appbibliotecadb.Service.EstudianteService;
 import appbibliotecadb.Service.LibroService;
-import appbibliotecadb.Service.PersonaService;
+import appbibliotecadb.Service.PrestamoService;
 import appbibliotecadb.Service.UsuarioService;
 
 import java.io.IOException;
@@ -29,12 +29,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-
 import java.util.List;
 import conection.DatabaseConnection;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -45,6 +45,12 @@ public class Menu extends javax.swing.JFrame {
     private DefaultTableModel modeloEstudiantes;
     private DefaultTableModel modeloLibros;
     private DefaultTableModel modeloUsuario;
+    private DefaultTableModel modeloPrestamo;
+
+    private TableRowSorter<DefaultTableModel> rowSorter;
+
+    private int idEstudiante;
+    private int idLibro;
 
     public Menu() throws IOException {
         FlatMacLightLaf.setup();
@@ -55,12 +61,19 @@ public class Menu extends javax.swing.JFrame {
         modeloEstudiantes = new DefaultTableModel();
         modeloLibros = new DefaultTableModel();
         modeloUsuario = new DefaultTableModel();
+        modeloPrestamo = new DefaultTableModel();
 
-        //listar personas
-        //listarPersonas();
+        // peimero incializamos el modelo estudiante y luego llamamos a listar estudiantes 
+        inicializarModeloEstudiantes();
         listarEstudiantes();
+
+        //libros
+        inicializarModeloLibro();
         listarLibros();
-        listarUsuarios();
+
+        //listarUsuarios();
+        inicializarModeloPrestamo();
+        listarPrestamos();
 
     }
 
@@ -73,6 +86,10 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDetalleLibros = new javax.swing.JDialog();
+        jScrollPane20 = new javax.swing.JScrollPane();
+        jTableDetallePrestamo = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
         jTp_Dasboart = new javax.swing.JTabbedPane();
         jP_Inicio = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -130,7 +147,7 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         jTableEstudiante = new javax.swing.JTable();
         btnNew_estudiante = new javax.swing.JButton();
-        txt_buscar_estudiante = new javax.swing.JTextField();
+        txtBuscarEstudiantes = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel39 = new javax.swing.JLabel();
         jP_Usuarios = new javax.swing.JPanel();
@@ -138,7 +155,7 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane10 = new javax.swing.JScrollPane();
         jtableUsuarios = new javax.swing.JTable();
         btnNew_estudiante1 = new javax.swing.JButton();
-        txt_buscar_estudiante1 = new javax.swing.JTextField();
+        txtBuscarUsuarios = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         jP_Reportes = new javax.swing.JPanel();
@@ -156,6 +173,68 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jtableReportesEstudiantes = new javax.swing.JTable();
         btnReporteEstudiantes = new javax.swing.JButton();
+
+        jTableDetallePrestamo.setBackground(new java.awt.Color(231, 253, 255));
+        jTableDetallePrestamo.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTableDetallePrestamo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Nombre y Apellidos", "Documento"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableDetallePrestamo.setGridColor(new java.awt.Color(204, 204, 204));
+        jTableDetallePrestamo.setRowHeight(30);
+        jTableDetallePrestamo.setShowGrid(true);
+        jTableDetallePrestamo.setShowVerticalLines(false);
+        jTableDetallePrestamo.getTableHeader().setReorderingAllowed(false);
+        jTableDetallePrestamo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableDetallePrestamoMouseClicked(evt);
+            }
+        });
+        jScrollPane20.setViewportView(jTableDetallePrestamo);
+
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel9.setText("Detalle de Prestamo");
+
+        javax.swing.GroupLayout jDetalleLibrosLayout = new javax.swing.GroupLayout(jDetalleLibros.getContentPane());
+        jDetalleLibros.getContentPane().setLayout(jDetalleLibrosLayout);
+        jDetalleLibrosLayout.setHorizontalGroup(
+            jDetalleLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDetalleLibrosLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jDetalleLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jScrollPane20, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40))
+        );
+        jDetalleLibrosLayout.setVerticalGroup(
+            jDetalleLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDetalleLibrosLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel9)
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane20, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -542,7 +621,7 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel15)
                 .addGap(20, 20, 20)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 271, Short.MAX_VALUE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
@@ -573,30 +652,15 @@ public class Menu extends javax.swing.JFrame {
         jTablePrestamos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jTablePrestamos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "id", "Estudiante", "Cantidad", "fecha de Prestamo", "fecha de Devolucion", "Observaciones"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTablePrestamos.setGridColor(new java.awt.Color(204, 204, 204));
         jTablePrestamos.setRowHeight(35);
         jTablePrestamos.setShowGrid(true);
@@ -608,11 +672,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         jScrollPane7.setViewportView(jTablePrestamos);
-        if (jTablePrestamos.getColumnModel().getColumnCount() > 0) {
-            jTablePrestamos.getColumnModel().getColumn(0).setMinWidth(50);
-            jTablePrestamos.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTablePrestamos.getColumnModel().getColumn(0).setMaxWidth(50);
-        }
 
         btnNew_prestamo.setBackground(new java.awt.Color(105, 162, 168));
         btnNew_prestamo.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -817,28 +876,18 @@ public class Menu extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id_Tipo_Documento", "Documento", "Nombre", "Apellidos", "Telefono", "DIreccion", "Estado"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTableEstudiante.setGridColor(new java.awt.Color(204, 204, 204));
         jTableEstudiante.setRowHeight(35);
         jTableEstudiante.setShowGrid(true);
         jTableEstudiante.setShowVerticalLines(false);
+        jTableEstudiante.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEstudianteMouseClicked(evt);
+            }
+        });
         jScrollPane9.setViewportView(jTableEstudiante);
 
         btnNew_estudiante.setBackground(new java.awt.Color(105, 162, 168));
@@ -853,15 +902,10 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        txt_buscar_estudiante.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_buscar_estudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_buscar_estudianteActionPerformed(evt);
-            }
-        });
-        txt_buscar_estudiante.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtBuscarEstudiantes.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtBuscarEstudiantes.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_buscar_estudianteKeyPressed(evt);
+                txtBuscarEstudiantesKeyPressed(evt);
             }
         });
 
@@ -891,7 +935,7 @@ public class Menu extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 502, Short.MAX_VALUE)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txt_buscar_estudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtBuscarEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(60, 60, 60))
         );
         jPanel13Layout.setVerticalGroup(
@@ -901,7 +945,7 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel39)
                 .addGap(15, 15, 15)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_buscar_estudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscarEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNew_estudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addGap(15, 15, 15)
@@ -980,17 +1024,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        txt_buscar_estudiante1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txt_buscar_estudiante1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_buscar_estudiante1ActionPerformed(evt);
-            }
-        });
-        txt_buscar_estudiante1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_buscar_estudiante1KeyPressed(evt);
-            }
-        });
+        txtBuscarUsuarios.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel11.setText("Buscar");
@@ -1018,7 +1052,7 @@ public class Menu extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 502, Short.MAX_VALUE)
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txt_buscar_estudiante1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtBuscarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(60, 60, 60))
         );
         jPanel14Layout.setVerticalGroup(
@@ -1028,7 +1062,7 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel40)
                 .addGap(15, 15, 15)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_buscar_estudiante1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNew_estudiante1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addGap(15, 15, 15)
@@ -1265,8 +1299,9 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNew_estudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew_estudianteActionPerformed
+        idEstudiante = 0;
         // Instancia del formulario EstudiantesForm
-        EstudiantesForm estudiantesForm = new EstudiantesForm(this, true); // `this` se refiere al Frame actual, `true` indica que es modal
+        EstudiantesForm estudiantesForm = new EstudiantesForm(this, true, this, idEstudiante); // `this` se refiere al Frame actual, `true` indica que es modal
         // Muestra el formulario
         estudiantesForm.setVisible(true);
 
@@ -1274,8 +1309,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNew_estudianteActionPerformed
 
     private void btnNew_libroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew_libroActionPerformed
+        idLibro = 0;
         // Instancia del formulario librosForm
-        LibrosForm librosForm = new LibrosForm(this, true); // `this` se refiere al Frame actual, `true` indica que es modal
+        LibrosForm librosForm = new LibrosForm(this, true, this, idLibro); // `this` se refiere al Frame actual, `true` indica que es modal
         // Muestra el formulario
         librosForm.setVisible(true);
 
@@ -1307,8 +1343,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_salirActionPerformed
 
     private void btnNew_prestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew_prestamoActionPerformed
+        int idPrestamo = 0;
         // Instancia del formulario prestamos form
-        PrestamosForm prestamosForm = new PrestamosForm(this, true); // `this` se refiere al Frame actual, `true` indica que es modal
+        PrestamosForm prestamosForm = new PrestamosForm(this, true, this, idPrestamo); // `this` se refiere al Frame actual, `true` indica que es modal
         // Muestra el formulario
         prestamosForm.setVisible(true);
     }//GEN-LAST:event_btnNew_prestamoActionPerformed
@@ -1317,34 +1354,95 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnVerReportesActionPerformed
 
-    private void txt_buscar_estudianteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscar_estudianteKeyPressed
-        txt_buscar_estudiante.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                // buscarEstudiantes();
-
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                //buscarEstudiantes();
-
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                //buscarEstudiantes();
-
-            }
-        });
-    }//GEN-LAST:event_txt_buscar_estudianteKeyPressed
-
     private void jTablePrestamosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePrestamosMouseClicked
+
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            // Obtener el índice de la fila donde se hizo clic derecho
+            int fila = jTablePrestamos.rowAtPoint(evt.getPoint());
+            if (fila != -1) {
+                // Seleccionar la fila
+                jTablePrestamos.setRowSelectionInterval(fila, fila);
+
+                // Mostrar el menú contextual
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem menuItemListar = new JMenuItem("Detalle de Prestamo");
+                JMenuItem menuItemEditar = new JMenuItem("editar prestamo");
+
+                menuItemListar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    // int idEstudiante = (int) jTablePrestamos.getValueAt(fila, 0);
+
+                    // Mostrar los valores obtenidos (para propósitos de verificación)
+                    // System.out.println("idEstudiante: " + idEstudiante);
+                    // Llamar al formulario de edición pasando los valores
+                    //EstudiantesForm estudiantesForm = new EstudiantesForm(this, true, this, idEstudiante);
+                    // estudiantesForm.setVisible(true);
+                    //jDetalleLibros.setModal(true);  // Asegurar que sea modal
+                    jDetalleLibros.pack();  // Ajustar el tamaño del diálogo
+                    jDetalleLibros.setLocationRelativeTo(this);  // Centrar el diálogo relativo al formulario principal
+                    jDetalleLibros.setVisible(true);
+                });
+
+                menuItemEditar.addActionListener(e -> {
+
+                    //metodo para editar prestamo de libros
+                });
+
+                popupMenu.add(menuItemListar);
+                popupMenu.add(menuItemEditar);
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+
 
     }//GEN-LAST:event_jTablePrestamosMouseClicked
 
     private void JTable_LibroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTable_LibroMouseClicked
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            // Obtener el índice de la fila donde se hizo clic derecho
+            int fila = JTable_Libro.rowAtPoint(evt.getPoint());
+            if (fila != -1) {
+                // Seleccionar la fila
+                JTable_Libro.setRowSelectionInterval(fila, fila);
 
+                // Mostrar el menú contextual
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem menuItemEditar = new JMenuItem("Editar registro");
+                JMenuItem menuItemEliminar = new JMenuItem("Eliminar registro");
+
+                menuItemEditar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    int idLibro = (int) JTable_Libro.getValueAt(fila, 0);
+
+                    // Mostrar los valores obtenidos (para propósitos de verificación)
+                    System.out.println("idEstudiante: " + idLibro);
+
+                    // Llamar al formulario de edición pasando los valores
+                    LibrosForm librosForm = new LibrosForm(this, true, this, idLibro);
+                    librosForm.setVisible(true);
+                });
+
+                menuItemEliminar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    int idLibro = (int) JTable_Libro.getValueAt(fila, 0);
+
+                    // Confirmar la eliminación
+                    int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar este registro?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // Cambiar el estado del estudiante y de la persona a "I" (inactivo)
+                        EstudianteController estudianteController = new EstudianteController(DatabaseConnection.getConnection());
+                        estudianteController.delete(idLibro);
+                        JOptionPane.showMessageDialog(this, "Registro eliminado satisfactoriamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
+                        // Actualizar la tabla de estudiantes
+                        listarEstudiantes();
+                    }
+                });
+
+                popupMenu.add(menuItemEditar);
+                popupMenu.add(menuItemEliminar);
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
     }//GEN-LAST:event_JTable_LibroMouseClicked
 
     private void txt_buscarLibroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscarLibroKeyPressed
@@ -1356,10 +1454,6 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnReporteEstudiantesActionPerformed
 
-    private void txt_buscar_estudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscar_estudianteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_buscar_estudianteActionPerformed
-
     private void btnNew_estudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNew_estudiante1ActionPerformed
         // Instancia del formulario prestamos form
         UsuariosForm usuariosForm = new UsuariosForm(this, true); // `this` se refiere al Frame actual, `true` indica que es modal
@@ -1367,13 +1461,61 @@ public class Menu extends javax.swing.JFrame {
         usuariosForm.setVisible(true);
     }//GEN-LAST:event_btnNew_estudiante1ActionPerformed
 
-    private void txt_buscar_estudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscar_estudiante1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_buscar_estudiante1ActionPerformed
+    private void jTableEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEstudianteMouseClicked
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            // Obtener el índice de la fila donde se hizo clic derecho
+            int fila = jTableEstudiante.rowAtPoint(evt.getPoint());
+            if (fila != -1) {
+                // Seleccionar la fila
+                jTableEstudiante.setRowSelectionInterval(fila, fila);
 
-    private void txt_buscar_estudiante1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscar_estudiante1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_buscar_estudiante1KeyPressed
+                // Mostrar el menú contextual
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem menuItemEditar = new JMenuItem("Editar registro");
+                JMenuItem menuItemEliminar = new JMenuItem("Eliminar registro");
+
+                menuItemEditar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    int idEstudiante = (int) jTableEstudiante.getValueAt(fila, 0);
+
+                    // Mostrar los valores obtenidos (para propósitos de verificación)
+                    System.out.println("idEstudiante: " + idEstudiante);
+
+                    // Llamar al formulario de edición pasando los valores
+                    EstudiantesForm estudiantesForm = new EstudiantesForm(this, true, this, idEstudiante);
+                    estudiantesForm.setVisible(true);
+                });
+
+                menuItemEliminar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    int idEstudiante = (int) jTableEstudiante.getValueAt(fila, 0);
+
+                    // Confirmar la eliminación
+                    int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro que desea eliminar este registro?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // Cambiar el estado del estudiante y de la persona a "I" (inactivo)
+                        EstudianteController estudianteController = new EstudianteController(DatabaseConnection.getConnection());
+                        estudianteController.delete(idEstudiante);
+                        JOptionPane.showMessageDialog(this, "Registro eliminado satisfactoriamente", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
+                        // Actualizar la tabla de estudiantes
+                        listarEstudiantes();
+                    }
+                });
+
+                popupMenu.add(menuItemEditar);
+                popupMenu.add(menuItemEliminar);
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_jTableEstudianteMouseClicked
+
+    private void txtBuscarEstudiantesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarEstudiantesKeyPressed
+
+    }//GEN-LAST:event_txtBuscarEstudiantesKeyPressed
+
+    private void jTableDetallePrestamoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableDetallePrestamoMouseClicked
+
+    }//GEN-LAST:event_jTableDetallePrestamoMouseClicked
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1386,48 +1528,75 @@ public class Menu extends javax.swing.JFrame {
     //==========================================================================   
     //Estudiantes
     //==========================================================================
-    private void listarEstudiantes() {
+    public final void inicializarModeloEstudiantes() {
+        modeloEstudiantes = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas no sean editables
+            }
+        };
         modeloEstudiantes.addColumn("Id");
+        modeloEstudiantes.addColumn("id_persona");
         modeloEstudiantes.addColumn("Codigo");
-        modeloEstudiantes.addColumn("Nombre y Apellidos");
         modeloEstudiantes.addColumn("Documento");
+        modeloEstudiantes.addColumn("Nombre y Apellidos");
+        modeloEstudiantes.addColumn("Genero");
         modeloEstudiantes.addColumn("Telefono");
         modeloEstudiantes.addColumn("Dirección");
         modeloEstudiantes.addColumn("Nivel/Ciclo");
         modeloEstudiantes.addColumn("Grado/Edad");
         modeloEstudiantes.addColumn("Sección");
         modeloEstudiantes.addColumn("Turno");
-        modeloEstudiantes.addColumn("Estado");
-
+        // modeloEstudiantes.addColumn("Acciones"); // Columna para los botones
         jTableEstudiante.setModel(modeloEstudiantes);
+        // Agregar el renderizador y editor a la columna de acciones
+        // jTableEstudiante.getColumnModel().getColumn(modeloEstudiantes.getColumnCount() - 1).setCellRenderer(new ButtonRendererEditor());
+        //  jTableEstudiante.getColumnModel().getColumn(modeloEstudiantes.getColumnCount() - 1).setCellEditor(new ButtonRendererEditor());
+
+        ocultarColumnas();
+    }
+
+    private void ocultarColumnas() {
+        jTableEstudiante.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(0).setWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(0).setPreferredWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(1).setMinWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(1).setMaxWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(1).setWidth(0);
+        jTableEstudiante.getColumnModel().getColumn(1).setPreferredWidth(0);
+    }
+
+    public final void listarEstudiantes() {
+        // Limpiar filas antes de agregar nuevas filas
+        modeloEstudiantes.setRowCount(0);
+
         EstudianteDAO estudianteDAO = new EstudianteController(DatabaseConnection.getConnection());
         EstudianteService estudianteService = new EstudianteService(estudianteDAO);
         List<Estudiante> estudiantes = estudianteService.readAll();
+
         if (estudiantes.size() > 0) {
             SwingUtilities.invokeLater(() -> {
                 for (Estudiante p : estudiantes) {
-                    Object[] fila = new Object[10];
+                    Object[] fila = new Object[12];
                     fila[0] = p.getId();
-                    fila[1] = p.getCodigo();
-                    fila[2] = p.getNombre_completo();
-                    fila[3] = p.getTelefono();
-                    fila[4] = p.getDireccion();
-                    fila[5] = p.getNivel_Ciclo();
-                    fila[6] = p.getGrado_Edad();
-                    fila[7] = p.getSeccion();
-                    fila[8] = p.getTurno();
-                    fila[9] = p.getEstado();
-
+                    fila[1] = p.getId_persona();
+                    fila[2] = "D N I " + p.getCodigo();
+                    fila[3] = p.getDocumento();
+                    fila[4] = p.getNombre_completo();
+                    fila[5] = p.getGenero();
+                    fila[6] = p.getTelefono();
+                    fila[7] = p.getDireccion();
+                    fila[8] = p.getNivel_Ciclo();
+                    fila[9] = p.getGrado_Edad();
+                    fila[10] = p.getSeccion();
+                    fila[11] = p.getTurno();
                     modeloEstudiantes.addRow(fila);
                 }
-                // Ocultar la columna ID
-                jTableEstudiante.getColumnModel().getColumn(0).setMinWidth(0);
-                jTableEstudiante.getColumnModel().getColumn(0).setMaxWidth(0);
-                jTableEstudiante.getColumnModel().getColumn(0).setWidth(0);
-                jTableEstudiante.getColumnModel().getColumn(0).setPreferredWidth(0);
+                ocultarColumnas();
             });
         } else {
-            System.out.println("La lista de estudiantes está vacía.");
+            return;
         }
     }
     //==========================================================================
@@ -1437,7 +1606,13 @@ public class Menu extends javax.swing.JFrame {
     //==========================================================================
     //Libros
     //==========================================================================
-    private void listarLibros() {
+    public final void inicializarModeloLibro() {
+        modeloLibros = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas no sean editables
+            }
+        };
         modeloLibros.addColumn("Id");
         modeloLibros.addColumn("Titulo");
         modeloLibros.addColumn("Autor");
@@ -1447,6 +1622,23 @@ public class Menu extends javax.swing.JFrame {
         modeloLibros.addColumn("Fecha de Publicación");
         modeloLibros.addColumn("Estado");
 
+        JTable_Libro.setModel(modeloLibros);
+        ocultarcolumnasLibro();
+
+    }
+
+    private void ocultarcolumnasLibro() {
+        // Ocultar la columna ID
+        JTable_Libro.getColumnModel().getColumn(0).setMinWidth(0);
+        JTable_Libro.getColumnModel().getColumn(0).setMaxWidth(0);
+        JTable_Libro.getColumnModel().getColumn(0).setWidth(0);
+        JTable_Libro.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+    }
+
+    public final void listarLibros() {
+        // Limpiar filas antes de agregar nuevas filas
+        modeloLibros.setRowCount(0);
         JTable_Libro.setModel(modeloLibros);
         LibroDAO libroDAO = new LibroController(DatabaseConnection.getConnection());
         LibroService libroService = new LibroService(libroDAO);
@@ -1466,20 +1658,16 @@ public class Menu extends javax.swing.JFrame {
 
                     modeloLibros.addRow(fila);
                 }
-                // Ocultar la columna ID
-                JTable_Libro.getColumnModel().getColumn(0).setMinWidth(0);
-                JTable_Libro.getColumnModel().getColumn(0).setMaxWidth(0);
-                JTable_Libro.getColumnModel().getColumn(0).setWidth(0);
-                JTable_Libro.getColumnModel().getColumn(0).setPreferredWidth(0);
+                ocultarcolumnasLibro();
             });
         } else {
-            System.out.println("La lista de libros está vacía.");
+            return;
         }
     }
+
     //==========================================================================
     //fin de libros 
     //==========================================================================
-
     //==========================================================================
     //Usuarios
     //==========================================================================
@@ -1511,7 +1699,7 @@ public class Menu extends javax.swing.JFrame {
                     fila[7] = p.getEstado();
 
                     modeloUsuario.addRow(fila);
-                }               
+                }
                 // Ocultar la columna ID
                 jtableUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
                 jtableUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -1519,12 +1707,93 @@ public class Menu extends javax.swing.JFrame {
                 jtableUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
             });
         } else {
-            System.out.println("La lista de libros está vacía.");
+            return;
         }
     }
 
     //==========================================================================
     //fin de Usuarios
+    //==========================================================================
+    //==========================================================================
+    //prestamos
+    //==========================================================================
+    public final void inicializarModeloPrestamo() {
+        modeloPrestamo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas no sean editables
+            }
+        };
+        modeloPrestamo.addColumn("Id");
+        modeloPrestamo.addColumn("id_estudiante");
+        modeloPrestamo.addColumn("Nombre de Estudiante");
+        modeloPrestamo.addColumn("id_usuario");
+        modeloPrestamo.addColumn("Fecha de Prestamo");
+        modeloPrestamo.addColumn("Fecha de Devolución");
+        modeloPrestamo.addColumn("Observaciones");
+        modeloPrestamo.addColumn("Cantidad");
+        modeloPrestamo.addColumn("Nombre de Usuario");
+        modeloPrestamo.addColumn("Estado");
+
+        jTablePrestamos.setModel(modeloPrestamo);
+        // Agregar el renderizador y editor a la columna de acciones
+        // jTableEstudiante.getColumnModel().getColumn(modeloEstudiantes.getColumnCount() - 1).setCellRenderer(new ButtonRendererEditor());
+        //  jTableEstudiante.getColumnModel().getColumn(modeloEstudiantes.getColumnCount() - 1).setCellEditor(new ButtonRendererEditor());
+        ocultarcolumnasPrestamos();
+
+    }
+
+    private void ocultarcolumnasPrestamos() {
+        // Ocultar la columna ID
+        jTablePrestamos.getColumnModel().getColumn(0).setMinWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(0).setWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        jTablePrestamos.getColumnModel().getColumn(1).setMinWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(1).setMaxWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(1).setWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(1).setPreferredWidth(0);
+
+        jTablePrestamos.getColumnModel().getColumn(3).setMinWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(3).setMaxWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(3).setWidth(0);
+        jTablePrestamos.getColumnModel().getColumn(3).setPreferredWidth(0);
+
+    }
+
+    public void listarPrestamos() {
+        // Limpiar filas antes de agregar nuevas filas
+        modeloPrestamo.setRowCount(0);
+        PrestamoDAO prestamoDAO = new PrestamosController(DatabaseConnection.getConnection());
+        PrestamoService prestamoService = new PrestamoService(prestamoDAO);
+        List<Prestamos> prestamos = prestamoService.readAll();
+        if (prestamos.size() > 0) {
+            SwingUtilities.invokeLater(() -> {
+                for (Prestamos p : prestamos) {
+                    Object[] fila = new Object[10];
+                    fila[0] = p.getId();
+                    fila[1] = p.getId_estudiante();
+                    fila[2] = p.getEstudiante();
+                    fila[3] = p.getId_usuario();
+                    fila[4] = p.getFecha_prestamo();
+                    fila[5] = p.getFecha_devolucion();
+                    fila[6] = p.getObservaciones();
+                    fila[7] = p.getTotal_libros();
+                    fila[8] = p.getUsuario();
+                    fila[9] = p.getEstado();
+
+                    modeloPrestamo.addRow(fila);
+                }
+                ocultarcolumnasPrestamos();
+            });
+        } else {
+            return;
+        }
+    }
+
+    //==========================================================================
+    //fin de prestamos
     //==========================================================================
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1540,6 +1809,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnReportePrestamos;
     private javax.swing.JButton btnVerReportes;
     private javax.swing.JButton btn_salir;
+    private javax.swing.JDialog jDetalleLibros;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1565,6 +1835,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel63;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jP_Estudiantes;
     private javax.swing.JPanel jP_Inicio;
     private javax.swing.JPanel jP_Libros;
@@ -1588,6 +1859,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane20;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
@@ -1598,6 +1870,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTableDetallePrestamo;
     private javax.swing.JTable jTableEstudiante;
     private javax.swing.JTable jTablePrestamos;
     private javax.swing.JTabbedPane jTp_Dasboart;
@@ -1607,9 +1880,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTable jtableUsuarios;
     private javax.swing.JLabel lblCantLibros;
     private javax.swing.JLabel lblCantPrestamos;
+    private javax.swing.JTextField txtBuscarEstudiantes;
+    private javax.swing.JTextField txtBuscarUsuarios;
     private javax.swing.JTextField txt_buscarLibro;
-    private javax.swing.JTextField txt_buscar_estudiante;
-    private javax.swing.JTextField txt_buscar_estudiante1;
     private javax.swing.JTextField txt_buscar_prestamo1;
     // End of variables declaration//GEN-END:variables
 

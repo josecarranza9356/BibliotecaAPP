@@ -4,7 +4,38 @@
  */
 package appbibliotecadb.View;
 
+import appbibliotecadb.Controller.EstudianteController;
+import appbibliotecadb.Controller.LibroController;
+import appbibliotecadb.Controller.PrestamosController;
+import appbibliotecadb.Dao.EstudianteDAO;
+import appbibliotecadb.Dao.LibroDAO;
+import appbibliotecadb.Model.DetallePrestamo;
+import appbibliotecadb.Model.Estudiante;
+import appbibliotecadb.Model.Libros;
+import appbibliotecadb.Model.Prestamos;
+import appbibliotecadb.Service.EstudianteService;
+import appbibliotecadb.Service.LibroService;
+import com.sun.jdi.connect.spi.Connection;
+import conection.DatabaseConnection;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,15 +43,36 @@ import javax.swing.JFrame;
  */
 public class PrestamosForm extends javax.swing.JDialog {
 
+    private Menu menu;
+    private int idPrestamo;
     /**
      * Creates new form PrestamosForm
      */
-    public PrestamosForm(java.awt.Frame parent, boolean modal) {
+    private DefaultTableModel modeloLibros;
+    private DefaultTableModel modeloEstudiantes;
+
+    private int id_usuario;
+    private int idSeleccionadoEstudiante;
+
+    private int total_Libros;
+
+    public PrestamosForm(java.awt.Frame parent, boolean modal, Menu menu, int idPrestamo) {
         super(parent, modal);
+        this.menu = menu;
         initComponents();
-        
+        cargarFechaActual();
+        bloquearFechasPasadas();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Permite cerrar solo este formulario sin afectar a otros
         setLocationRelativeTo(null);
+
+        id_usuario = 1;
+
+        inicializarModeloLibros();
+        listarLibros();
+
+        inicializarModeloEstudiantes();
+        listarEstudiantes();
+
     }
 
     /**
@@ -32,14 +84,14 @@ public class PrestamosForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDpersonas = new javax.swing.JDialog();
+        jDAgregarEstudiantes = new javax.swing.JDialog();
         jLabel5 = new javax.swing.JLabel();
         txt_buscarLibroPres2 = new javax.swing.JTextField();
         jLabel54 = new javax.swing.JLabel();
         jScrollPane20 = new javax.swing.JScrollPane();
-        JTableCarreraUni2 = new javax.swing.JTable();
+        jTableEstudiantePrestamo = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
-        lblEstudiante = new javax.swing.JLabel();
+        LblEstudiante = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         lblFechaPrestamo = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
@@ -48,12 +100,12 @@ public class PrestamosForm extends javax.swing.JDialog {
         jLabel53 = new javax.swing.JLabel();
         txtObservaciones = new javax.swing.JTextField();
         jScrollPane19 = new javax.swing.JScrollPane();
-        jTableItemLibrosPrestamos = new javax.swing.JTable();
-        lblCantidadLibros = new javax.swing.JLabel();
+        jtDetallePrestamo = new javax.swing.JTable();
+        lblTotal_Libros = new javax.swing.JLabel();
         btn_NuevoPrestamo = new javax.swing.JButton();
         btnGuadarPrestamo = new javax.swing.JButton();
         btnCancelarPrestamo = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAgregarEstudiante = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         txt_buscarLibroPres = new javax.swing.JTextField();
         jLabel50 = new javax.swing.JLabel();
@@ -62,14 +114,14 @@ public class PrestamosForm extends javax.swing.JDialog {
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel5.setText("Seleccione una Persona");
+        jLabel5.setText("Seleccione un Estudiante");
 
         jLabel54.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel54.setText("Buscar");
 
-        JTableCarreraUni2.setBackground(new java.awt.Color(231, 253, 255));
-        JTableCarreraUni2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        JTableCarreraUni2.setModel(new javax.swing.table.DefaultTableModel(
+        jTableEstudiantePrestamo.setBackground(new java.awt.Color(231, 253, 255));
+        jTableEstudiantePrestamo.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTableEstudiantePrestamo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -92,36 +144,47 @@ public class PrestamosForm extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        JTableCarreraUni2.setGridColor(new java.awt.Color(204, 204, 204));
-        JTableCarreraUni2.setRowHeight(30);
-        JTableCarreraUni2.setShowGrid(true);
-        JTableCarreraUni2.setShowVerticalLines(false);
-        JTableCarreraUni2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane20.setViewportView(JTableCarreraUni2);
+        jTableEstudiantePrestamo.setGridColor(new java.awt.Color(204, 204, 204));
+        jTableEstudiantePrestamo.setRowHeight(30);
+        jTableEstudiantePrestamo.setShowGrid(true);
+        jTableEstudiantePrestamo.setShowVerticalLines(false);
+        jTableEstudiantePrestamo.getTableHeader().setReorderingAllowed(false);
+        jTableEstudiantePrestamo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEstudiantePrestamoMouseClicked(evt);
+            }
+        });
+        jScrollPane20.setViewportView(jTableEstudiantePrestamo);
 
-        javax.swing.GroupLayout jDpersonasLayout = new javax.swing.GroupLayout(jDpersonas.getContentPane());
-        jDpersonas.getContentPane().setLayout(jDpersonasLayout);
-        jDpersonasLayout.setHorizontalGroup(
-            jDpersonasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDpersonasLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jDpersonasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(jDpersonasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jDpersonasLayout.createSequentialGroup()
-                            .addComponent(jLabel54)
-                            .addGap(10, 10, 10)
-                            .addComponent(txt_buscarLibroPres2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane20, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        javax.swing.GroupLayout jDAgregarEstudiantesLayout = new javax.swing.GroupLayout(jDAgregarEstudiantes.getContentPane());
+        jDAgregarEstudiantes.getContentPane().setLayout(jDAgregarEstudiantesLayout);
+        jDAgregarEstudiantesLayout.setHorizontalGroup(
+            jDAgregarEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDAgregarEstudiantesLayout.createSequentialGroup()
+                .addGroup(jDAgregarEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jDAgregarEstudiantesLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jDAgregarEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jDAgregarEstudiantesLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jDAgregarEstudiantesLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel54)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_buscarLibroPres2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jDAgregarEstudiantesLayout.createSequentialGroup()
+                        .addContainerGap(30, Short.MAX_VALUE)
+                        .addComponent(jScrollPane20, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30))
         );
-        jDpersonasLayout.setVerticalGroup(
-            jDpersonasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDpersonasLayout.createSequentialGroup()
+        jDAgregarEstudiantesLayout.setVerticalGroup(
+            jDAgregarEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDAgregarEstudiantesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addGap(30, 30, 30)
-                .addGroup(jDpersonasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jDAgregarEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel54)
                     .addComponent(txt_buscarLibroPres2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
@@ -133,8 +196,8 @@ public class PrestamosForm extends javax.swing.JDialog {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 153, 153)), "   Ingrese Datos   ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 14), new java.awt.Color(204, 204, 204))); // NOI18N
 
-        lblEstudiante.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        lblEstudiante.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        LblEstudiante.setFont(new java.awt.Font("Century Gothic", 0, 15)); // NOI18N
+        LblEstudiante.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
         jLabel23.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel23.setText("Estudiante:");
@@ -152,27 +215,22 @@ public class PrestamosForm extends javax.swing.JDialog {
         jLabel53.setText("Observaciónes");
 
         txtObservaciones.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txtObservaciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtObservacionesActionPerformed(evt);
-            }
-        });
 
-        jTableItemLibrosPrestamos.setBackground(new java.awt.Color(231, 253, 255));
-        jTableItemLibrosPrestamos.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jTableItemLibrosPrestamos.setModel(new javax.swing.table.DefaultTableModel(
+        jtDetallePrestamo.setBackground(new java.awt.Color(231, 253, 255));
+        jtDetallePrestamo.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jtDetallePrestamo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Titulo del Libro"
+                "Id", "Titulo del Libro", "Autor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -183,24 +241,24 @@ public class PrestamosForm extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTableItemLibrosPrestamos.setGridColor(new java.awt.Color(204, 204, 204));
-        jTableItemLibrosPrestamos.setRowHeight(30);
-        jTableItemLibrosPrestamos.setShowGrid(true);
-        jTableItemLibrosPrestamos.setShowVerticalLines(false);
-        jTableItemLibrosPrestamos.getTableHeader().setReorderingAllowed(false);
-        jTableItemLibrosPrestamos.addMouseListener(new java.awt.event.MouseAdapter() {
+        jtDetallePrestamo.setGridColor(new java.awt.Color(204, 204, 204));
+        jtDetallePrestamo.setRowHeight(30);
+        jtDetallePrestamo.setShowGrid(true);
+        jtDetallePrestamo.setShowVerticalLines(false);
+        jtDetallePrestamo.getTableHeader().setReorderingAllowed(false);
+        jtDetallePrestamo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableItemLibrosPrestamosMouseClicked(evt);
+                jtDetallePrestamoMouseClicked(evt);
             }
         });
-        jScrollPane19.setViewportView(jTableItemLibrosPrestamos);
-        if (jTableItemLibrosPrestamos.getColumnModel().getColumnCount() > 0) {
-            jTableItemLibrosPrestamos.getColumnModel().getColumn(0).setMinWidth(40);
-            jTableItemLibrosPrestamos.getColumnModel().getColumn(0).setPreferredWidth(40);
-            jTableItemLibrosPrestamos.getColumnModel().getColumn(0).setMaxWidth(40);
+        jScrollPane19.setViewportView(jtDetallePrestamo);
+        if (jtDetallePrestamo.getColumnModel().getColumnCount() > 0) {
+            jtDetallePrestamo.getColumnModel().getColumn(0).setMinWidth(40);
+            jtDetallePrestamo.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jtDetallePrestamo.getColumnModel().getColumn(0).setMaxWidth(40);
         }
 
-        lblCantidadLibros.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        lblTotal_Libros.setFont(new java.awt.Font("Century Gothic", 0, 15)); // NOI18N
 
         btn_NuevoPrestamo.setBackground(new java.awt.Color(78, 101, 226));
         btn_NuevoPrestamo.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -238,11 +296,11 @@ public class PrestamosForm extends javax.swing.JDialog {
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(0, 102, 102));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/new_24px.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarEstudiante.setBackground(new java.awt.Color(0, 102, 102));
+        btnAgregarEstudiante.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/new_24px.png"))); // NOI18N
+        btnAgregarEstudiante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAgregarEstudianteActionPerformed(evt);
             }
         });
 
@@ -255,9 +313,9 @@ public class PrestamosForm extends javax.swing.JDialog {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGap(10, 10, 10)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAgregarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(txtObservaciones, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel6Layout.createSequentialGroup()
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,17 +325,20 @@ public class PrestamosForm extends javax.swing.JDialog {
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel52)
                                 .addComponent(jDchFechaDevolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lblCantidadLibros, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel6Layout.createSequentialGroup()
                             .addComponent(btnGuadarPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btn_NuevoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btnCancelarPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel53, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane19, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel53, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane19, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTotal_Libros, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(0, 0, Short.MAX_VALUE))))
                 .addGap(20, 20, 20))
         );
         jPanel6Layout.setVerticalGroup(
@@ -287,8 +348,8 @@ public class PrestamosForm extends javax.swing.JDialog {
                 .addComponent(jLabel23)
                 .addGap(5, 5, 5)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LblEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -304,15 +365,15 @@ public class PrestamosForm extends javax.swing.JDialog {
                 .addGap(5, 5, 5)
                 .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane19, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(lblCantidadLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane19, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTotal_Libros, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelarPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_NuevoPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuadarPrestamo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50))
+                .addGap(30, 30, 30))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 153, 153)), "   Seleccione los libros", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Gothic", 0, 14), new java.awt.Color(204, 204, 204))); // NOI18N
@@ -386,7 +447,7 @@ public class PrestamosForm extends javax.swing.JDialog {
                 .addComponent(txt_buscarLibroPres, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(jScrollPane18, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(50, 50, 50))
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -412,93 +473,390 @@ public class PrestamosForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+  private void cargarFechaActual() {
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fechaFormateada = fechaActual.format(formatter);
+        lblFechaPrestamo.setText("   " + fechaFormateada);
+    }
 
-    private void jTableItemLibrosPrestamosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableItemLibrosPrestamosMouseClicked
+    private void bloquearFechasPasadas() {
+        // Obtener la fecha actual
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
 
-    }//GEN-LAST:event_jTableItemLibrosPrestamosMouseClicked
+        // Establecer la fecha mínima seleccionable en el JDateChooser
+        jDchFechaDevolucion.setMinSelectableDate(today);
+    }
 
+    private void jtDetallePrestamoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDetallePrestamoMouseClicked
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            // Obtener el índice de la fila donde se hizo clic derecho
+            int fila = jtDetallePrestamo.rowAtPoint(evt.getPoint());
+            if (fila != -1) {
+                // Seleccionar la fila
+                jtDetallePrestamo.setRowSelectionInterval(fila, fila);
+                // Mostrar el menú contextual
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem menuItemEliminar = new JMenuItem("Eliminar Libro Seleccionado...");
+
+                menuItemEliminar.addActionListener(e -> {
+                    // Eliminar el libro de la tabla jtItemLibros
+                    DefaultTableModel model = (DefaultTableModel) jtDetallePrestamo.getModel();
+                    model.removeRow(fila);
+
+                    // Actualizar lblCantidadLibros
+                    actualizarCantidadLibros();
+                });
+                popupMenu.add(menuItemEliminar);
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_jtDetallePrestamoMouseClicked
+    private void actualizarCantidadLibros() {
+        DefaultTableModel model = (DefaultTableModel) jtDetallePrestamo.getModel();
+        int cantidadLibros = model.getRowCount();
+        lblTotal_Libros.setText("Cantidad de libros: " + cantidadLibros);
+
+        total_Libros = cantidadLibros;
+    }
     private void btn_NuevoPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NuevoPrestamoActionPerformed
-
+        limpiarDatos();
     }//GEN-LAST:event_btn_NuevoPrestamoActionPerformed
 
     private void btnGuadarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuadarPrestamoActionPerformed
-
+        guardarDatos();
     }//GEN-LAST:event_btnGuadarPrestamoActionPerformed
 
     private void btnCancelarPrestamoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPrestamoActionPerformed
-
+        dispose();
     }//GEN-LAST:event_btnCancelarPrestamoActionPerformed
 
-    private void txtObservacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtObservacionesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtObservacionesActionPerformed
-
     private void JTableLibrosPrestamosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTableLibrosPrestamosMouseClicked
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            // Obtener el índice de la fila donde se hizo clic derecho
+            int fila = JTableLibrosPrestamos.rowAtPoint(evt.getPoint());
+            if (fila != -1) {
+                // Seleccionar la fila
+                JTableLibrosPrestamos.setRowSelectionInterval(fila, fila);
+                // Mostrar el menú contextual
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem menuItemAgregar = new JMenuItem("Agregar Libro Seleccionado...");
 
+                menuItemAgregar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    int idLibro = (int) JTableLibrosPrestamos.getValueAt(fila, 0);
+                    String titulo = (String) JTableLibrosPrestamos.getValueAt(fila, 1);
+                    String autor = (String) JTableLibrosPrestamos.getValueAt(fila, 2);
+
+                    // Validar si ya se seleccionaron 3 libros
+                    DefaultTableModel model = (DefaultTableModel) jtDetallePrestamo.getModel();
+                    if (model.getRowCount() >= 5) {
+                        JOptionPane.showMessageDialog(this, "No puedes seleccionar más de 3 libros.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Validar si el libro ya existe en jtItemLibros
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        int existingIdLibro = (int) model.getValueAt(i, 0);
+                        if (existingIdLibro == idLibro) {
+                            JOptionPane.showMessageDialog(this, "El libro ya ha sido agregado.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+
+                    // Agregar el libro a la tabla jtItemLibros
+                    model.addRow(new Object[]{idLibro, titulo, autor});
+                    actualizarCantidadLibros();
+                });
+                popupMenu.add(menuItemAgregar);
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
     }//GEN-LAST:event_JTableLibrosPrestamosMouseClicked
 
     private void txt_buscarLibroPresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscarLibroPresKeyPressed
 
     }//GEN-LAST:event_txt_buscarLibroPresKeyPressed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       jDpersonas.setModal(true);  // Asegurar que sea modal
-        jDpersonas.pack();  // Ajustar el tamaño del diálogo
-        jDpersonas.setLocationRelativeTo(this);  // Centrar el diálogo relativo al formulario principal
-        jDpersonas.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnAgregarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEstudianteActionPerformed
+        jDAgregarEstudiantes.setModal(true);  // Asegurar que sea modal
+        jDAgregarEstudiantes.pack();  // Ajustar el tamaño del diálogo
+        jDAgregarEstudiantes.setLocationRelativeTo(this);  // Centrar el diálogo relativo al formulario principal
+        jDAgregarEstudiantes.setVisible(true);
+    }//GEN-LAST:event_btnAgregarEstudianteActionPerformed
 
+    private void jTableEstudiantePrestamoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEstudiantePrestamoMouseClicked
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            // Obtener el índice de la fila donde se hizo clic derecho
+            int fila = jTableEstudiantePrestamo.rowAtPoint(evt.getPoint());
+            if (fila != -1) {
+                // Seleccionar la fila
+                jTableEstudiantePrestamo.setRowSelectionInterval(fila, fila);
+                // Mostrar el menú contextual
+                JPopupMenu popupMenu = new JPopupMenu();
+                JMenuItem menuItemEditar = new JMenuItem("Agregar Estudiante Selecionado...");
+
+                menuItemEditar.addActionListener(e -> {
+                    // Obtener los valores de la fila seleccionada
+                    int idEstudiante = (int) jTableEstudiantePrestamo.getValueAt(fila, 0);
+                    String Nombre_completo = (String) jTableEstudiantePrestamo.getValueAt(fila, 1);
+                    String Documento = (String) jTableEstudiantePrestamo.getValueAt(fila, 2);
+                    LblEstudiante.setText("   DNI: " + Documento + " - " + Nombre_completo + " - id -" + idEstudiante);
+                    jDAgregarEstudiantes.setVisible(false);
+
+                    idSeleccionadoEstudiante = idEstudiante;
+                });
+                popupMenu.add(menuItemEditar);
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_jTableEstudiantePrestamoMouseClicked
+
+    //==========================================================================
+    //Libros
+    //==========================================================================
+    public void inicializarModeloLibros() {
+
+        modeloLibros = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas no sean editables
+            }
+        };
+        modeloLibros.addColumn("Id");
+        modeloLibros.addColumn("Titulo del libro");
+        modeloLibros.addColumn("Autor");
+        modeloLibros.addColumn("Cantidad");
+        JTableLibrosPrestamos.setModel(modeloLibros);
+
+        ocultarColumnas();
+    }
+
+    private void ocultarColumnas() {
+        JTableLibrosPrestamos.getColumnModel().getColumn(0).setMinWidth(0);
+        JTableLibrosPrestamos.getColumnModel().getColumn(0).setMaxWidth(0);
+        JTableLibrosPrestamos.getColumnModel().getColumn(0).setWidth(0);
+        JTableLibrosPrestamos.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        JTableLibrosPrestamos.getColumnModel().getColumn(3).setMaxWidth(100);
+        // Centrar el contenido de la columna "Cantidad"
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        JTableLibrosPrestamos.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+
+        jtDetallePrestamo.getColumnModel().getColumn(0).setMinWidth(0);
+        jtDetallePrestamo.getColumnModel().getColumn(0).setMaxWidth(0);
+        jtDetallePrestamo.getColumnModel().getColumn(0).setWidth(0);
+        jtDetallePrestamo.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+
+    public void listarLibros() {
+        // Limpiar filas antes de agregar nuevas filas
+        modeloLibros.setRowCount(0);
+
+        LibroDAO libroDAO = new LibroController(DatabaseConnection.getConnection());
+        LibroService libroService = new LibroService(libroDAO);
+        List<Libros> libros = libroService.listAll();
+
+        if (libros.size() > 0) {
+            SwingUtilities.invokeLater(() -> {
+                for (Libros p : libros) {
+                    Object[] fila = new Object[4];
+                    fila[0] = p.getId();
+                    fila[1] = p.getTitulo();
+                    fila[2] = p.getNombre_Autor();
+                    fila[3] = p.getCantidad();
+                    modeloLibros.addRow(fila);
+                }
+                ocultarColumnas();
+            });
+        } else {
+            //return;
+            System.out.println("lista vacia");
+        }
+    }
+
+    //==========================================================================   
+    //Estudiantes
+    //==========================================================================
+    public void inicializarModeloEstudiantes() {
+        modeloEstudiantes = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas no sean editables
+            }
+        };
+        modeloEstudiantes.addColumn("Id");
+        modeloEstudiantes.addColumn("Nombre y Apellidos");
+        modeloEstudiantes.addColumn("Documento");
+        modeloEstudiantes.addColumn("Telefono");
+        // modeloEstudiantes.addColumn("Acciones"); // Columna para los botones
+        jTableEstudiantePrestamo.setModel(modeloEstudiantes);
+        // Agregar el renderizador y editor a la columna de acciones
+        // jTableEstudiante.getColumnModel().getColumn(modeloEstudiantes.getColumnCount() - 1).setCellRenderer(new ButtonRendererEditor());
+        //  jTableEstudiante.getColumnModel().getColumn(modeloEstudiantes.getColumnCount() - 1).setCellEditor(new ButtonRendererEditor());
+
+        ocultarColumnasEstudiante();
+    }
+
+    private void ocultarColumnasEstudiante() {
+        jTableEstudiantePrestamo.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableEstudiantePrestamo.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableEstudiantePrestamo.getColumnModel().getColumn(0).setWidth(0);
+        jTableEstudiantePrestamo.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+
+    public void listarEstudiantes() {
+        // Limpiar filas antes de agregar nuevas filas
+        modeloEstudiantes.setRowCount(0);
+
+        EstudianteDAO estudianteDAO = new EstudianteController(DatabaseConnection.getConnection());
+        EstudianteService estudianteService = new EstudianteService(estudianteDAO);
+        List<Estudiante> estudiantes = estudianteService.readAll();
+
+        if (estudiantes.size() > 0) {
+            SwingUtilities.invokeLater(() -> {
+                for (Estudiante p : estudiantes) {
+                    Object[] fila = new Object[4];
+                    fila[0] = p.getId();
+                    fila[1] = p.getNombre_completo();
+                    fila[2] = p.getDocumento();
+                    fila[3] = p.getTelefono();
+                    modeloEstudiantes.addRow(fila);
+                }
+                ocultarColumnas();
+            });
+        } else {
+            return;
+        }
+    }
+
+    public void limpiarDatos() {
+        LblEstudiante.setText("");
+        lblTotal_Libros.setText("");
+        jDchFechaDevolucion.setDate(null);
+        txtObservaciones.setText("");
+        // Limpia la tabla de detalles
+        DefaultTableModel model = (DefaultTableModel) jtDetallePrestamo.getModel();
+        model.setRowCount(0);
+    }
+
+    private void guardarDatos() {
+        try {
+            int id_estudiante = idSeleccionadoEstudiante;
+            int id_usuario = this.id_usuario; // Asegúrate de tener el id del usuario almacenado en alguna variable
+
+            String fechaPrestamo = lblFechaPrestamo.getText(); // Fecha de préstamo actual como String
+            LocalDate fechaDevolucionLocalDate = jDchFechaDevolucion.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // Fecha de devolución seleccionada como LocalDate
+            // Convertir LocalDate a Date para usarlo en el objeto Prestamo
+            Instant instant = fechaDevolucionLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            Date fechaDevolucionDate = Date.from(instant);
+            String observaciones = txtObservaciones.getText().trim();
+            int total_libros = total_Libros;
+            String estado = "A"; // Estado activo
+
+            // Validaciones
+            if (id_estudiante <= 0) {
+                JOptionPane.showMessageDialog(this, "Seleccione un estudiante", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (fechaDevolucionDate == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione una fecha de devolución", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (total_libros <= 0) {
+                JOptionPane.showMessageDialog(this, "El total de libros debe ser mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Crear la lista de detalles de préstamo
+            List<DetallePrestamo> detalles = obtenerDetallesPrestamo();
+
+            // Crear el objeto Prestamo
+            Prestamos prestamo = new Prestamos();
+            prestamo.setId_estudiante(id_estudiante);
+            prestamo.setId_usuario(id_usuario);
+            prestamo.setFecha_prestamo(fechaPrestamo);
+            prestamo.setFecha_devolucion(fechaDevolucionDate);
+            prestamo.setObservaciones(observaciones);
+            prestamo.setTotal_libros(total_libros);
+            prestamo.setEstado(estado);
+            prestamo.setDetalles(detalles);
+
+            // Guardar los datos usando el controlador
+            PrestamosController prestamoController = new PrestamosController(DatabaseConnection.getConnection());
+            boolean exito = prestamoController.guardarPrestamo(prestamo, detalles);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Préstamo guardado exitosamente.");
+                // Limpiar los campos después de guardar
+                limpiarDatos();
+                menu.listarPrestamos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al guardar el préstamo.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Formato de número inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Imprimir la traza para depuración
+        }
+    }
+
+    private List<DetallePrestamo> obtenerDetallesPrestamo() {
+        List<DetallePrestamo> detalles = new ArrayList<>();
+        for (int i = 0; i < jtDetallePrestamo.getRowCount(); i++) {
+            DetallePrestamo detalle = new DetallePrestamo();
+            detalle.setId_libro((int) jtDetallePrestamo.getValueAt(i, 0));
+            detalle.setEstado("A"); // Estado por defecto 'A'
+            detalles.add(detalle);
+        }
+        return detalles;
+    }
+
+    //==========================================================================
+    //fin de estudiantes 
+    //==========================================================================
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PrestamosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PrestamosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PrestamosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PrestamosForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
+    public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                PrestamosForm dialog = new PrestamosForm(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                try {
+
+                    // Obtener el idEstudiante (simulado para pruebas)
+                    int idPrestamo = 0; // Aquí debes obtener el idEstudiante de donde sea necesario
+                    idPrestamo = idPrestamo;
+                    Menu menu = new Menu(); // Crear instancia de Menu para pruebas
+                    PrestamosForm dialog = new PrestamosForm(new javax.swing.JFrame(), true, menu, idPrestamo);
+                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    dialog.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(EstudiantesForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable JTableCarreraUni2;
     private javax.swing.JTable JTableLibrosPrestamos;
+    private javax.swing.JLabel LblEstudiante;
+    private javax.swing.JButton btnAgregarEstudiante;
     private javax.swing.JButton btnCancelarPrestamo;
     private javax.swing.JButton btnGuadarPrestamo;
     private javax.swing.JButton btn_NuevoPrestamo;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JDialog jDAgregarEstudiantes;
     private com.toedter.calendar.JDateChooser jDchFechaDevolucion;
-    private javax.swing.JDialog jDpersonas;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
@@ -511,10 +869,10 @@ public class PrestamosForm extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane19;
     private javax.swing.JScrollPane jScrollPane20;
-    private javax.swing.JTable jTableItemLibrosPrestamos;
-    private javax.swing.JLabel lblCantidadLibros;
-    private javax.swing.JLabel lblEstudiante;
+    private javax.swing.JTable jTableEstudiantePrestamo;
+    private javax.swing.JTable jtDetallePrestamo;
     private javax.swing.JLabel lblFechaPrestamo;
+    private javax.swing.JLabel lblTotal_Libros;
     private javax.swing.JTextField txtObservaciones;
     private javax.swing.JTextField txt_buscarLibroPres;
     private javax.swing.JTextField txt_buscarLibroPres2;

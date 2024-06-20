@@ -13,11 +13,11 @@ import java.util.Date;
 public class Libros {
 
     private int id;
-    private String titulo;
     private int id_autor;
+    private String titulo;
     private String editorial;
     private String categoria;
-    private String nombre_Autor;  
+    private String nombre_Autor;
     private int cantidad;
     private Date A_publicacion;
     private String estado;
@@ -25,10 +25,9 @@ public class Libros {
     public Libros() {
     }
 
-    public Libros(int id, String titulo, int id_autor, String editorial, String categoria, int cantidad, Date A_publicacion, String estado) {
-        this.id = id;
-        this.titulo = titulo;
+    public Libros(int id_autor, String titulo, String editorial, String categoria, int cantidad, Date A_publicacion, String estado) {
         this.id_autor = id_autor;
+        this.titulo = titulo;
         this.editorial = editorial;
         this.categoria = categoria;
         this.cantidad = cantidad;
@@ -36,8 +35,9 @@ public class Libros {
         this.estado = estado;
     }
 
-    public Libros(int id, String titulo, String editorial, String categoria, String nombre_Autor, int cantidad, Date A_publicacion, String estado) {
+    public Libros(int id, int id_autor, String titulo, String editorial, String categoria, String nombre_Autor, int cantidad, Date A_publicacion, String estado) {
         this.id = id;
+        this.id_autor = id_autor;
         this.titulo = titulo;
         this.editorial = editorial;
         this.categoria = categoria;
@@ -45,6 +45,14 @@ public class Libros {
         this.cantidad = cantidad;
         this.A_publicacion = A_publicacion;
         this.estado = estado;
+    }
+
+    // constructor para prestamos 
+    public Libros(int id, String titulo, String nombre_Autor, int cantidad) {
+        this.id = id;
+        this.titulo = titulo;
+        this.nombre_Autor = nombre_Autor;
+        this.cantidad = cantidad;
     }
 
     public int getId() {
@@ -55,20 +63,20 @@ public class Libros {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public int getId_autor() {
         return id_autor;
     }
 
     public void setId_autor(int id_autor) {
         this.id_autor = id_autor;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getEditorial() {
@@ -119,8 +127,6 @@ public class Libros {
         this.estado = estado;
     }
 
-    
-    
    
 
 }

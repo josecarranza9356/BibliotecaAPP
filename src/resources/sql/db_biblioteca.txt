@@ -4,7 +4,7 @@ CREATE TABLE persona(
     documento VARCHAR(30) NOT NULL UNIQUE,
     nombre VARCHAR(30) NOT NULL,
     apellidos VARCHAR(30) NOT NULL,
-    genero ENUM('Maculino', 'Fenenino', 'Otros') NOT NULL,
+    genero ENUM('Masculino', 'Femenino', 'Otros') NOT NULL,
     telefono VARCHAR(15),
     direccion VARCHAR(50),
     estado CHAR(1) NOT NULL CHECK (estado IN ('A', 'I'))
@@ -17,7 +17,7 @@ CREATE TABLE estudiante(
     codigo VARCHAR(30) NOT NULL UNIQUE,   
     Nivel_Ciclo ENUM('Inicial', 'Primaria', 'Secundaria') NOT NULL,
     Grado_Edad CHAR(1) NOT NULL,
-    seccion CAHAR(1), -- Opcional, si las secciones son relevantes  
+    seccion CHAR(1), -- Opcional, si las secciones son relevantes  
     Turno ENUM('M', 'T', 'N') NOT NULL,
     estado CHAR(1) NOT NULL CHECK (estado IN ('A', 'I')),    
     FOREIGN KEY (id_persona) REFERENCES persona(id)
@@ -38,17 +38,17 @@ CREATE TABLE usuario(
 -- autor table
 CREATE TABLE autor(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(30) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
     estado CHAR(1) NOT NULL CHECK (estado IN ('A', 'I'))
 );
 
 -- libro table
 CREATE TABLE libro(
     id INT AUTO_INCREMENT PRIMARY KEY,
+    id_autor INT,   
     titulo VARCHAR(30) NOT NULL,
     editorial Varchar(30) not null,
-    categoria Varchar (30) not null,
-    id_autor INT,    
+    categoria Varchar (30) not null,     
     cantidad INT NOT NULL CHECK (cantidad >= 0),
     A_publicacion DATE NOT NULL,
     estado CHAR(1) NOT NULL CHECK (estado IN ('A', 'I')),
@@ -60,20 +60,20 @@ CREATE TABLE prestamo(
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_estudiante INT,
     id_usuario int,
-    fecha_prestamo DATE NOT NULL,
+    fecha_prestamo VARCHAR(20) NOT NULL,
     fecha_devolucion DATE NOT NULL,
     observaciones VARCHAR(255),
+    total_libros INT NOT NULL CHECK (total_libros > 0),
     estado CHAR(1) NOT NULL CHECK (estado IN ('A', 'I')),
     FOREIGN KEY (id_estudiante) REFERENCES estudiante(id),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
 
 -- item_prestamo table
-CREATE TABLE item_prestamo(
+CREATE TABLE detalle_prestamo(
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_prestamo INT,
-    id_libro INT,
-    cantidad INT NOT NULL CHECK (cantidad > 0),
+    id_libro INT,    
     estado CHAR(1) NOT NULL CHECK (estado IN ('A', 'I')),
     FOREIGN KEY (id_prestamo) REFERENCES prestamo(id),
     FOREIGN KEY (id_libro) REFERENCES libro(id)

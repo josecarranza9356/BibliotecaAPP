@@ -20,24 +20,8 @@ public class PersonaService {
         this.personaDAO = personaDAO;
     }
 
-    public void create(Persona persona) {
-        personaDAO.create(persona);
-    }
-
     public List<Persona> listAllPersonas() {
         return personaDAO.listAllPersonas();
-    }
-
-    public Persona readById(int id) {
-        return personaDAO.readById(id);
-    }
-
-    public void update(Persona persona) {
-        personaDAO.update(persona);
-    }
-
-    public void delete(int id) {
-        personaDAO.delete(id);
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface EstudianteDAO {
 
-    void create(Estudiante estudiante);
+    boolean createEstudiante(Estudiante estudiante);
 
     List<Estudiante> readAll();
 

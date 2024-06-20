@@ -4,10 +4,22 @@
  */
 package appbibliotecadb.Dao;
 
+import appbibliotecadb.Model.Prestamos;
+import java.util.List;
+
 /**
  *
  * @author JoseCv14
  */
 public interface PrestamoDAO {
     
+     boolean createPrestamo(Prestamos prestamo);
+
+    List<Prestamos> readAll();
+
+    Prestamos readById(int id);
+
+    void update(Prestamos prestamo);
+
+    void delete(int id);
 }

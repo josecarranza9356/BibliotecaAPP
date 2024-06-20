@@ -13,7 +13,6 @@ public class Usuario {
     private int id;
     private int id_persona;
     private int id_rol;
-
     private String nombre_completo;
     private String t_documento;
     private String telefono;
@@ -36,8 +35,6 @@ public class Usuario {
         this.contraseña = contraseña;
         this.estado = estado;
     }
-
-    
 
     public Usuario(int id, int id_persona, int id_rol, String usuario, String contraseña, String estado) {
         this.id = id;
@@ -128,5 +125,4 @@ public class Usuario {
         this.estado = estado;
     }
 
-    
 }

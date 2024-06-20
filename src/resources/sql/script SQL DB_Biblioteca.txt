@@ -1,4 +1,3 @@
-
 -- Insertar datos en persona
 INSERT INTO persona (documento, nombre, apellidos,genero, telefono, direccion, estado) VALUES
 ('12345678', 'Juan', 'Pérez','Masculino', '123456789', 'Calle Falsa 123', 'A'),
@@ -13,107 +12,72 @@ INSERT INTO persona (documento, nombre, apellidos,genero, telefono, direccion, e
 ('E5678901', 'Elena', 'Ramírez', 'Femenino', '321987654', 'Avenida 8', 'A');
 
 -- Insertar datos en estudiante
-INSERT INTO estudiante (codigo, id_persona, Nivel_Ciclo, Grado_Edad, seccion, Turno, estado) VALUES
-('EST001', 1, 'Primaria', '1', 'A', 'M', 'A'),
-('EST002', 2, 'Secundaria', '1', 'B', 'T', 'A'),
-('EST003', 3, 'Inicial', '4', '-', 'M', 'A'),
-('EST004', 4, 'Primaria', '2', 'A', 'T', 'A'),
-('EST005', 5, 'Secundaria', '2', 'B', 'M', 'A'),
-('EST006', 6, 'Inicial', '5', '-', 'T', 'A'),
-('EST007', 7, 'Primaria', '3', 'A', 'M', 'A'),
-('EST008', 8, 'Secundaria', '3', 'B', 'T', 'A'),
-('EST009', 9, 'Inicial', '6', '-', 'M', 'A'),
-('EST010', 10, 'Primaria', '4', 'A', 'T', 'A');
+INSERT INTO estudiante (id_persona,codigo, nivel_Ciclo, grado_Edad, seccion, turno, estado) VALUES
+(1,'EST001', 'Primaria', '1', 'A', 'M', 'A'),
+(2,'EST002', 'Secundaria', '1', 'B', 'T', 'A'),
+(3,'EST003', 'Inicial', '4', '-', 'M', 'A'),
+(4,'EST004',  'Primaria', '2', 'A', 'T', 'A'),
+(5,'EST005',  'Secundaria', '2', 'B', 'M', 'A'),
+(6,'EST006',  'Inicial', '5', '-', 'T', 'A'),
+(7,'EST007',  'Primaria', '3', 'A', 'M', 'A'),
+(8,'EST008',  'Secundaria', '3', 'B', 'T', 'A'),
+(9,'EST009',  'Inicial', '6', '-', 'M', 'A'),
+(10,'EST010',  'Primaria', '4', 'A', 'T', 'A');
 
 
 
 -- Insertar datos en usuario
 INSERT INTO usuario (id_persona, nombre_rol, usuario, contraseña, estado) VALUES
 (1, 'admin', 'admin', 'admin123', 'A'),
-(2, 'admin', 'biblio1', 'biblio123', 'A'),
-(3, 'admin', 'prof1', 'prof123', 'A'),
-(4, 'admin', 'estu1', 'estu123', 'A'),
-(5, 'admin', 'coord1', 'coord123', 'A'),
-(6, 'admin', 'dir1', 'dir123', 'A'),
-(7, 'admin', 'subdir1', 'subdir123', 'A'),
-(8, 'admin', 'sec1', 'sec123', 'A'),
-(9, 'admin', 'tes1', 'tes123', 'A'),
-(10, 'admin', 'conserje1', 'conserje123', 'A');
+(2, 'bibliotecario', 'biblio1', 'biblio123', 'A'),
+(3, 'Auxiliar', 'prof1', 'prof123', 'A');
 
--- Insertar datos en autor
+-- autor
 INSERT INTO autor (nombre, estado) VALUES
 ('Gabriel García Márquez', 'A'),
-('J.K. Rowling', 'A'),
-('George R.R. Martin', 'A'),
 ('Isabel Allende', 'A'),
-('Stephen King', 'A'),
-('J.R.R. Tolkien', 'A'),
-('Paulo Coelho', 'A'),
-('Agatha Christie', 'A'),
-('Dan Brown', 'A'),
-('Julio Cortázar', 'A');
+('Mario Vargas Llosa', 'A'),
+('Jorge Luis Borges', 'A'),
+('Julio Cortázar', 'A'),
+('Pablo Neruda', 'A'),
+('Carlos Fuentes', 'A'),
+('Octavio Paz', 'A'),
+('Miguel de Cervantes', 'A'),
+('Federico García Lorca', 'A');
 
--- Insertar datos en editorial
-INSERT INTO editorial (nombre, estado) VALUES
-('Editorial Planeta', 'A'),
-('Editorial Anagrama', 'A'),
-('Editorial Alfaguara', 'A'),
-('Editorial Seix Barral', 'A'),
-('Editorial Santillana', 'A'),
-('Editorial SM', 'A'),
-('Editorial Siruela', 'A'),
-('Editorial Tusquets', 'A'),
-('Editorial Espasa', 'A'),
-('Editorial RBA', 'A');
+-- libro
+INSERT INTO libro (titulo, editorial, categoria, id_autor, cantidad, A_publicacion, estado) VALUES
+('Cien años de soledad', 'Sudamericana', 'Novela', 1, 10, '1967-05-30', 'A'),
+('La casa de los espíritus', 'Debolsillo', 'Novela', 2, 8, '1982-11-01', 'A'),
+('La ciudad y los perros', 'Alfaguara', 'Novela', 3, 5, '1963-01-01', 'A'),
+('Ficciones', 'Emecé', 'Cuento', 4, 7, '1944-01-01', 'A'),
+('Rayuela', 'Sudamericana', 'Novela', 5, 12, '1963-06-28', 'A'),
+('Veinte poemas de amor y una canción desesperada', 'Editorial Nascimento', 'Poesía', 6, 15, '1924-01-01', 'A'),
+('La región más transparente', 'Fondo de Cultura Económica', 'Novela', 7, 4, '1958-01-01', 'A'),
+('El laberinto de la soledad', 'Fondo de Cultura Económica', 'Ensayo', 8, 3, '1950-01-01', 'A'),
+('Don Quijote de la Mancha', 'Francisco de Robles', 'Novela', 9, 6, '1605-01-16', 'A'),
+('Bodas de sangre', 'Ediciones Cátedra', 'Teatro', 10, 9, '1933-01-01', 'A');
 
--- Insertar datos en categoria
-INSERT INTO categoria (nombre, estado) VALUES
-('Novela', 'A'),
-('Cuento', 'A'),
-('Poesía', 'A'),
-('Ensayo', 'A'),
-('Biografía', 'A'),
-('Historia', 'A'),
-('Ciencia', 'A'),
-('Filosofía', 'A'),
-('Arte', 'A'),
-('Teatro', 'A');
 
--- Insertar datos en libro
-INSERT INTO libro (titulo, id_autor, editorial, categoria, cantidad, A_piblicacion, estado) VALUES
-('Cien Años de Soledad', 1, 'Cien', 'Cien' , 10, '1967-06-05', 'A'),
-('Harry Potter y la Piedra Filosofal', 2, 'Cien', 'Cien', 15, '1997-06-26', 'A'),
-('Juego de Tronos', 3, 'Cien', 'Cien', 8, '1996-08-06', 'A'),
-('La Casa de los Espíritus', 4, 'Cien', 'Cien', 12, '1982-10-15', 'A'),
-('It', 5, 'Cien', 'Cien', 7, '1986-09-15', 'A'),
-('El Hobbit', 6, 'Cien', 'Cien', 9, '1937-09-21', 'A'),
-('El Alquimista', 7, 'Cien', 'Cien', 20, '1988-05-01', 'A'),
-('Asesinato en el Orient Express', 8, 'Cien', 'Cien', 11, '1934-01-01', 'A'),
-('El Código Da Vinci', 9, 'Cien', 'Cien', 13, '2003-03-18', 'A'),
-('Rayuela', 10, 'Cien', 'Cien', 10, '1963-06-28', 'A');
+INSERT INTO prestamo (id_estudiante, id_usuario, fecha_prestamo, fecha_devolucion, observaciones,total_libros,estado) VALUES
+(1, 1, '2024-06-10', '2024-06-17', 'Observación 1', 5,'A'),
+(2, 1, '2024-06-10', '2024-06-17', 'Observación 2', 5,'A'),
+(3, 2, '2024-06-10', '2024-06-17', 'Observación 3', 5, 'A');
 
--- Insertar datos en prestamo
-INSERT INTO prestamo (id_estudiante, fecha_prestamo, fecha_devolucion, observaciones, estado) VALUES
-(1, '2023-01-01', '2023-01-10', 'Devuelto a tiempo', 'A'),
-(2, '2023-02-01', '2023-02-10', 'Devuelto con retraso', 'A'),
-(3, '2023-03-01', '2023-03-10', 'Devuelto en buen estado', 'A'),
-(4, '2023-04-01', '2023-04-10', 'Devuelto dañado', 'A'),
-(5, '2023-05-01', '2023-05-10', 'Devuelto', 'A'),
-(6, '2023-06-01', '2023-06-10', 'No devuelto', 'A'),
-(7, '2023-07-01', '2023-07-10', 'Devuelto tarde', 'A'),
-(8, '2023-08-01', '2023-08-10', 'Devuelto bien', 'A'),
-(9, '2023-09-01', '2023-09-10', 'Devuelto rápido', 'A'),
-(10, '2023-10-01', '2023-10-10', 'Devuelto excelente', 'A');
+INSERT INTO detalle_prestamo (id_prestamo, id_libro, estado) VALUES
+(1, 1, 'A'),
+(1, 2, 'A'),
+(1, 3, 'A'),
+(1, 4, 'A'),
+(1, 5, 'A'),
+(2, 1, 'A'),
+(2, 2, 'A'),
+(2, 3, 'A'),
+(2, 4, 'A'),
+(2, 5, 'A'),
+(3, 1, 'A'),
+(3, 2, 'A'),
+(3, 3, 'A'),
+(3, 4, 'A'),
+(3, 5, 'A');
 
--- Insertar datos en item_prestamo
-INSERT INTO item_prestamo (id_prestamo, id_libro, cantidad, estado) VALUES
-(1, 1, 1, 'A'),
-(2, 2, 1, 'A'),
-(3, 3, 1, 'A'),
-(4, 4, 1, 'A'),
-(5, 5, 1, 'A'),
-(6, 6, 1, 'A'),
-(7, 7, 1, 'A'),
-(8, 8, 1, 'A'),
-(9, 9, 1, 'A'),
-(10, 10, 1, 'A');

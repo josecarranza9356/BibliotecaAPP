@@ -19,8 +19,9 @@ public class LibroService {
         this.libroDao = libroDao;
     }
 
-    public void create(Libros libros) {
+    public boolean  create(Libros libros) {
         libroDao.create(libros);
+        return false;
     }
 
     public List<Libros> listAll() {
@@ -31,8 +32,9 @@ public class LibroService {
         return libroDao.readById(id);
     }
 
-    public void update(Libros libros) {
+    public boolean  update(Libros libros) {
         libroDao.update(libros);
+        return false;
     }
 
     public void delete(int id) {

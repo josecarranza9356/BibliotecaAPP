@@ -21,6 +21,7 @@ public class Estudiante {
 
     //campos de tabla persona no requeridos
     private String nombre_completo;
+    private String documento;
     private String telefono;
     private String direccion;
     private String genero;
@@ -28,8 +29,8 @@ public class Estudiante {
     public Estudiante() {
     }
 
-    public Estudiante(int id, int id_persona, String codigo, String nivel_Ciclo, String grado_Edad, String seccion, String turno, String estado) {
-        this.id = id;
+    public Estudiante(int id_persona, String codigo, String nivel_Ciclo, String grado_Edad, String seccion, String turno, String estado) {
+
         this.id_persona = id_persona;
         this.codigo = codigo;
         this.nivel_Ciclo = nivel_Ciclo;
@@ -39,23 +40,28 @@ public class Estudiante {
         this.estado = "A";
     }
 
-    public Estudiante(int id, String codigo, String nivel_Ciclo, String grado_Edad, String seccion, String turno, String estado, String nombre_completo, String telefono, String direccion, String genero) {
+    public Estudiante(int id, int id_persona, String codigo, String documento, String nombre_completo, String genero, String telefono, String direccion, String nivel_Ciclo, String grado_Edad, String seccion, String turno) {
         this.id = id;
+        this.id_persona = id_persona;
         this.codigo = codigo;
+        this.documento = documento;
+        this.nombre_completo = nombre_completo;
+        this.genero = genero;
+        this.telefono = telefono;
+        this.direccion = direccion;
         this.nivel_Ciclo = nivel_Ciclo;
         this.grado_Edad = grado_Edad;
         this.seccion = seccion;
         this.turno = turno;
-        this.estado = estado;
-        this.nombre_completo = nombre_completo;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.genero = genero;
+
     }
 
-    
-    
-    
+    public Estudiante(int id, String nombre_completo, String documento, String telefono) {
+        this.id = id;
+        this.nombre_completo = nombre_completo;
+        this.documento = documento;
+        this.telefono = telefono;
+    }
 
     public int getId() {
         return id;
@@ -129,6 +135,14 @@ public class Estudiante {
         this.nombre_completo = nombre_completo;
     }
 
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -152,7 +166,5 @@ public class Estudiante {
     public void setGenero(String genero) {
         this.genero = genero;
     }
-
-    
 
 }

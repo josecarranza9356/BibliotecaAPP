@@ -13,13 +13,13 @@ import java.util.List;
  */
 public interface LibroDAO {
 
-    void create(Libros libros);
+    boolean create(Libros libros);
 
     List<Libros> listAll();
 
     Libros readById(int id);
 
-    void update(Libros libros);
+    boolean  update(Libros libros);
 
     void delete(int id);
 

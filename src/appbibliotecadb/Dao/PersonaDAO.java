@@ -13,14 +13,6 @@ import java.util.List;
  */
 public interface PersonaDAO {
 
-    void create(Persona persona);
-
     List<Persona> listAllPersonas();
-
-    Persona readById(int id);
-
-    void update(Persona persona);
-
-    void delete(int id);
-
+    
 }

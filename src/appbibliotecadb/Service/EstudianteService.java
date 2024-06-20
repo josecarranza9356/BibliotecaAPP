@@ -20,9 +20,11 @@ public class EstudianteService {
         this.estudianteDAO = estudianteDAO;
     }
 
-    public void create(Estudiante persona) {
-        estudianteDAO.create(persona);
+    public void createEstudiante(Estudiante estudiante) {
+        estudianteDAO.createEstudiante(estudiante);
     }
+
+    
 
     public List<Estudiante> readAll() {
         return estudianteDAO.readAll();
